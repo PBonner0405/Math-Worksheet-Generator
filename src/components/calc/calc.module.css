@@ -1,0 +1,31 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    position: relative;
+
+    font-size: 12px;
+    font-weight: 400;
+    max-width: 80px;
+    min-width: 40px;
+}
+
+.number {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    margin-bottom: 0;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.digit {
+    text-align: right;
+    margin-bottom: 0;
+    width: 100%;
+    font-weight: 600;
+}
+
+.wrapper .digit:last-child {
+    border-bottom: 1px solid var(--border);
+}
