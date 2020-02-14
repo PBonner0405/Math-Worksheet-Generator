@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getRandomNumber } from '../../utils';
 import Substraction from '../../assets/images/subtraction_thumbnail.jpg';
 import Addition from '../../assets/images/addition_thumbnail.jpg';
 import Multiplication from '../../assets/images/multiplication_thumbnail.jpg';

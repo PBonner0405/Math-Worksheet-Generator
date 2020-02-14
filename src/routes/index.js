@@ -12,7 +12,7 @@ const Routes = () => {
             <div className="App">
                 <Switch>
                     <Route exact path="/Home" component={Home} />
-                    <Route path="/Main" component={Main} />
+                    <Route path="/Main/:type" component={Main} />
                     <Redirect exact from="/" to="/Home"></Redirect>
                     <Route component={NotFound} />
                 </Switch>
