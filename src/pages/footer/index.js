@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
     return (
         <footer>
-            Footer
+            Contact Me: +1 123 456 7890
         </footer>
     )
 }

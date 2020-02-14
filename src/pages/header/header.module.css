@@ -1,0 +1,38 @@
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 36px;
+}
+
+.favicon {
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+}
+
+.favicon img {
+    width: 42px;
+    height: 42px;
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+}
+
+.links li {
+    text-decoration: none;
+    padding: 0px 16px;
+}
+
+.links li a {
+    text-decoration: none;
+    color: var(--black);
+}
+
+.links li a:hover {
+    text-decoration: underline;
+    color: var(--primary);
+}
