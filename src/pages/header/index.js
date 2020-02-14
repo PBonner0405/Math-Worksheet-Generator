@@ -4,7 +4,6 @@ import styles from './header.module.css';
 import Logo from '../../assets/icons/logo.png';
 
 const Header = () => {
-    console.log(styles)
     return (
         <header className={styles.wrapper}>
             <a href="/" className={styles.favicon}>
