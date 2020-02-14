@@ -9,7 +9,15 @@ const Calc = ({operator, data, isNumber=true}) => {
                 isNumber && <p className={styles.number}>{data.id+1})</p>
             }
             <p className={styles.digit}>{data.first}</p>
-            <p className={styles.digit}>{operator}&nbsp;{data.second}</p>
+            <p className={styles.digit}>
+                <span>
+                    {operator}
+                </span>
+                &nbsp;
+                <span>
+                    {data.second}
+                </span>
+            </p>
         </div>
     );
 }
