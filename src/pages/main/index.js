@@ -72,7 +72,7 @@ const Main = ({match}) => {
                         </div>
                         <div className={styles.length}>
                             <label htmlFor="length">Number of digits</label>
-                            <input id="length" type="number" min={1} max={5} value={digits} onChange={e => setDigits(e.target.value)}/>
+                            <input id="length" type="number" min={1} max={5} value={digits} onChange={e => setDigits(e.target.value>5?5:e.target.value)}/>
                         </div>
                         <div className={styles.orientation}>
                             <label htmlFor="orientation">Orientation</label>
@@ -87,11 +87,17 @@ const Main = ({match}) => {
                         </div>
                         <div className={styles.problems}>
                             <label htmlFor="problems">Number of problems</label>
-                            <input id="problems" type="number" min={1} max={40} value={problems} onChange={e => setProblems(e.target.value>20?50:e.target.value)}/>
+                            <input id="problems" type="number" min={1} max={40} value={problems} onChange={e => setProblems(e.target.value>50?50:e.target.value)}/>
                         </div>
                         <Button onClick={generateProblems}>Generate!</Button>
                     </div>
                     <div className={styles.previewWorksheet}>
+                        {
+                            title !== "" &&
+                            <p>
+                                {title}
+                            </p>
+                        }
                         {
                             show && 
                             (operator === "+" || operator === "-" || operator === "x" || operator === "/") ?
