@@ -8,6 +8,7 @@
   --selected: hsla(210, 100%, 50%, 0.06);
   --black: hsla(0, 0%, 0%, 0.9);
   --white: hsl(0, 0%, 100%);
+  --light--green: hsl(175, 23%, 49%);
 }
 
 body {

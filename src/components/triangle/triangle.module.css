@@ -1,0 +1,55 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper > div:last-child {
+    margin-top: 16px;
+}
+
+.triangle {
+    display: flex;
+    min-width: 200px;
+    min-height: 180px;
+    justify-content: center;
+    position: relative;
+}
+
+.triangle > span {
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+
+    border-bottom: 180px solid var(--light--green);
+}
+
+.triangle p {
+    z-index: 99;
+    position: absolute;
+    margin: 0px;
+}
+
+.triangle p:nth-child(2) {
+    left: 99px;
+    top: 32px;
+    width: 36px;
+    text-align: center;
+}
+
+.triangle p:nth-child(3) {
+    z-index: 99;
+    position: absolute;
+    left: 40px;
+    bottom: 6px;
+}
+
+.triangle p:nth-child(4) {
+    z-index: 99;
+    position: absolute;
+    right: 40px;
+    bottom: 6px;
+    width: 40px;
+    text-align: right;
+}

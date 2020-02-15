@@ -63,8 +63,8 @@ const getSubtractionPair = (length, index) => {
 // Get Addition and Subtraction Fact Family
 const getAddSubFactFamily = (sum, index) => {
     const len = sum.toString().length
-    var first = getRandomNumber(len);
-    var second = getRandomNumber(len);
+    var first = getRandomNumber(len) % sum;
+    var second = getRandomNumber(len) % sum;
     return {
         id: index,
         first: first,

@@ -158,7 +158,6 @@ const Main = ({match}) => {
                                         return <Triangle 
                                             key = {element.id.toString()}
                                             data={element}
-                                            operator={operator} 
                                         />;
                                     })
                                 }
