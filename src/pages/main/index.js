@@ -114,6 +114,7 @@ const Main = ({match}) => {
                                 {
                                     results.map(element => {
                                         return <Calc 
+                                            key = {element.id.toString()}
                                             isNumber={true}
                                             data={element}
                                             operator={operator} 
