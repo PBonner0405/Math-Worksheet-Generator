@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button'
-import { getRandomNumber, getDivisionPair, getSubtractionPair } from '../../utils';
+import { 
+    getRandomNumber,
+    getDivisionPair,
+    getSubtractionPair,
+    getAddSubFactFamily
+} from '../../utils';
 import { Calc, Triangle } from '../../components';
 
 import styles from './main.module.css';
@@ -14,6 +19,7 @@ const Main = ({match}) => {
     const [show, setShow] = useState(false);
     const [operator, setOperator] = useState("+");
     const [results, setResults] = useState([]);
+    const [sum, setSum] = useState(20);
 
     const generateProblems = () => {
         // Generate Number arrays
@@ -51,6 +57,11 @@ const Main = ({match}) => {
                 setOperator("÷");
                 break;
             case "adsubfamilies":
+                array = [];
+                for(i = 0 ; i < problems ; i ++) {
+                    array.push(getAddSubFactFamily(sum, i));
+                }
+                console.log(array);
                 setOperator("addfamily");
                 break;
             case "multipleFamily":
@@ -124,13 +135,18 @@ const Main = ({match}) => {
                             </div> : 
                             (operator === "addfamily" || operator === "multfamily") ?
                             <div className={styles.familyResults}>
-                                <Triangle 
-                                    isNumber={true}
-                                    data={results[0]}
-                                    type={operator}></Triangle>
+                                {
+                                    results.map(element => {
+                                        return <Triangle 
+                                            key = {element.id.toString()}
+                                            data={element}
+                                            operator={operator} 
+                                        />;
+                                    })
+                                }
                             </div> :
                             <div className={styles.graph}>
-                                I am graph
+                                I am waiting for your options
                             </div>
                         }
                     </div>

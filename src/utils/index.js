@@ -61,8 +61,16 @@ const getSubtractionPair = (length, index) => {
 }
 
 // Get Addition and Subtraction Fact Family
-const getAddSubFactFamily = () => {
-    
+const getAddSubFactFamily = (sum, index) => {
+    const len = sum.toString().length
+    var first = getRandomNumber(len);
+    var second = getRandomNumber(len);
+    return {
+        id: index,
+        first: first,
+        second: second,
+        last: Math.abs(first - second)
+    }
 }
 
 export {
@@ -71,4 +79,5 @@ export {
     getSubtractionPair,
     getGCD,
     getLCM,
+    getAddSubFactFamily
 }
