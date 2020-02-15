@@ -86,24 +86,16 @@ const Main = ({match}) => {
             <div className="container">
                 <div className="row">
                     <div className={styles.selectPanel}>
-                        <div className={styles.title}>
-                            <label htmlFor="title">Title</label>
-                            <input id="title" type="text" value={title} onChange={e => setTitle(e.target.value)}/>
-                        </div>
-                        
+                        <Input type="text" id="title" min={10} value={title}
+                            label="Title" handleChange={setTitle} className={styles.input}
+                        />
                         <Input type="number" id="sum" min={10} value={sum}
                             label="Sum" handleChange={setSum} className={styles.input}
                         />
-                        {/* <div className={styles.sum}>
-                            <label htmlFor="sum">Sum</label>
-                            <input id="sum" type="number" min={10}  value={sum}
-                                onChange={e => setSum(e.target.value<10?10:e.target.value)}/>
-                        </div> */}
-                        <div className={styles.length}>
-                            <label htmlFor="length">Number of digits</label>
-                            <input id="length" type="number" min={1} max={5} value={digits}
-                                onChange={e => setDigits(e.target.value>5?5:e.target.value)}/>
-                        </div>
+
+                        <Input type="number" id="length" min={1} max={5} value={digits}
+                            label="Number of digits" handleChange={setDigits} className={styles.input}
+                        />
                         <div className={styles.orientation}>
                             <label htmlFor="orientation">Orientation</label>
                             <select id="orientation" value={orientation} onChange={e=>setOrientation(e.target.value)}>
@@ -115,10 +107,10 @@ const Main = ({match}) => {
                                 </option>
                             </select>
                         </div>
-                        <div className={styles.problems}>
-                            <label htmlFor="problems">Number of problems</label>
-                            <input id="problems" type="number" min={1} max={40} value={problems} onChange={e => setProblems(e.target.value>50?50:e.target.value)}/>
-                        </div>
+
+                        <Input type="number" id="problems" min={1} max={80} value={problems}
+                            label="Number of problems" handleChange={setProblems} className={styles.input}
+                        />
                         <Button onClick={generateProblems}>Generate!</Button>
                     </div>
                     <div className={styles.previewWorksheet}>

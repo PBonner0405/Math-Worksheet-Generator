@@ -13,9 +13,12 @@ const Input = ({
 }) => {
 
     const validate = (rs) => {
-        if(rs > max) rs = max;
-        if(rs < min) rs = min;
-        return rs;
+        if(type === "number"){
+            if(rs > max) rs = max;
+            if(rs < min) rs = min;
+            return rs;
+        }
+        if(type === "text") return rs;
     }
 
     return (
