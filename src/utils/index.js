@@ -49,7 +49,8 @@ const getDivisionPair = (length, index) => {
     return result;
 }
 
-const getSubstractionPair = (length, index) => {
+// Get Substraction 
+const getSubtractionPair = (length, index) => {
     var num1 = getRandomNumber(length);
     var num2 = getRandomNumber(length);
     return {
@@ -59,10 +60,15 @@ const getSubstractionPair = (length, index) => {
     }
 }
 
+// Get Addition and Subtraction Fact Family
+const getAddSubFactFamily = () => {
+    
+}
+
 export {
     getRandomNumber,
     getDivisionPair,
-    getSubstractionPair,
+    getSubtractionPair,
     getGCD,
     getLCM,
 }

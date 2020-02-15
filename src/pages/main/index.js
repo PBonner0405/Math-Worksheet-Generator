@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button'
-import { getRandomNumber, getDivisionPair, getSubstractionPair } from '../../utils';
+import { getRandomNumber, getDivisionPair, getSubtractionPair } from '../../utils';
 import { Calc, Triangle } from '../../components';
 
 import styles from './main.module.css';
@@ -36,7 +36,7 @@ const Main = ({match}) => {
             case "subtraction":
                 array = [];
                 for(i = 0 ; i < problems ; i ++) {
-                    array.push(getSubstractionPair(digits, i));
+                    array.push(getSubtractionPair(digits, i));
                 }
                 setOperator("-");
                 break;
