@@ -19,6 +19,14 @@ const getLCM = (a, b) => {
     return a * b / getGCD(a, b);
 }
 
+const getSecondDivisionValue = (num1, num2) => {
+    var gcd = getGCD(num1, num2);
+    var result = (num1>num2?num1:num2)/gcd;
+    if(result < 10)
+        return result>gcd?result:gcd
+    return (num1>num2?num1:num2)/gcd
+}
+
 const getDivisionPair = (length, index) => {
     var result = {
         id: index,
@@ -33,7 +41,7 @@ const getDivisionPair = (length, index) => {
             result = {
                 id: index,
                 first: num1>num2?num1:num2,
-                second: (num1>num2?num1:num2)/getGCD(num1, num2)
+                second: getSecondDivisionValue(num1, num2)
             }
             break;
         }
