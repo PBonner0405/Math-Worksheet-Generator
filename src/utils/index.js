@@ -36,28 +36,38 @@ const getDivisionPair = (length, index) => {
     while(true) {
         var num1 = getRandomNumber(length);
         var num2 = getRandomNumber(length);
-        if(getGCD(num1, num2) > 10)
-        {
-            result = {
-                id: index,
-                first: num1>num2?num1:num2,
-                second: getSecondDivisionValue(num1, num2)
+        var gcd = getGCD(num1, num2);
+        if(gcd > 10)
+            if((num1/gcd > 1)||(num2/gcd > 1))
+            {
+                result = {
+                    id: index,
+                    first: num1>num2?num1:num2,
+                    second: getSecondDivisionValue(num1, num2)
+                }
+                break;
             }
-            break;
-        }
     }
     return result;
 }
 
 // Get Substraction 
 const getSubtractionPair = (length, index) => {
-    var num1 = getRandomNumber(length);
-    var num2 = getRandomNumber(length);
-    return {
-        id: index,
-        first: num1>num2?num1:num2,
-        second: num1>num2?num2:num1
+    var res;
+    while(true) {
+        var num1 = getRandomNumber(length);
+        var num2 = getRandomNumber(length);
+        if(Math.abs(num1-num2)>2)
+        {
+            res =  {
+                id: index,
+                first: num1>num2?num1:num2,
+                second: num1>num2?num2:num1
+            }
+            break;
+        }
     }
+    return res;
 }
 
 // Get Addition and Subtraction Fact Family
