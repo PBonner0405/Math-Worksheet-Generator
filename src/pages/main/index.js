@@ -4,7 +4,8 @@ import {
     getRandomNumber,
     getDivisionPair,
     getSubtractionPair,
-    getAddSubFactFamily
+    getAddSubFactFamily,
+    getMultiDiviFactFamily
 } from '../../utils';
 import { Calc, Triangle, Input } from '../../components';
 
@@ -83,11 +84,15 @@ const Main = ({match}) => {
                 break;
             case "adsubfamilies":
                 array = [];
-                for(i = 0 ; i < problems ; i ++) {
+                for(i = 0 ; i < 8 ; i ++) {
                     array.push(getAddSubFactFamily(sum, i));
                 }
                 break;
             case "multipleFamily":
+                array = [];
+                for(i = 0 ; i < 8 ; i ++) {
+                    array.push(getMultiDiviFactFamily(sum, i));
+                }
                 break;
             case "graphPaper":
                 break;
@@ -110,9 +115,13 @@ const Main = ({match}) => {
                             label="Title" handleChange={setTitle}
                         />
                         {
-                            (operator === "addfamily" || operator === "multfamily") &&
-                            <Input type="number" id="sum" min={10} value={sum}
+                            operator === "addfamily" ?
+                            <Input type="number" id="sum" min={9} value={sum}
                                 label="Sum" handleChange={setSum}
+                            /> :
+                            operator === "multfamily" &&
+                            <Input type="number" id="sum" min={9} value={sum}
+                                label="Result of Multiply" handleChange={setSum}
                             />
                         }
 

@@ -73,11 +73,33 @@ const getAddSubFactFamily = (sum, index) => {
     }
 }
 
+// Get Addition and Subtraction Fact Family
+const getMultiDiviFactFamily = (multiply, index) => {
+    const len = multiply.toString().length
+    var result;
+    while(true) {
+        var num1 = getRandomNumber(len) % multiply;
+        var num2 = getRandomNumber(len) % multiply;
+        if(getGCD(num1, num2) > 10)
+        {
+            result = {
+                id: index,
+                first: num1>num2?num1:num2,
+                second: getSecondDivisionValue(num1, num2),
+                last: (num1>num2?num1:num2) / getSecondDivisionValue(num1, num2),
+            }
+            break;
+        }
+    }
+    return result;
+}
+
 export {
     getRandomNumber,
     getDivisionPair,
     getSubtractionPair,
     getGCD,
     getLCM,
-    getAddSubFactFamily
+    getAddSubFactFamily,
+    getMultiDiviFactFamily
 }
