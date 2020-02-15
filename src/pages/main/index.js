@@ -6,7 +6,7 @@ import {
     getSubtractionPair,
     getAddSubFactFamily
 } from '../../utils';
-import { Calc, Triangle } from '../../components';
+import { Calc, Triangle, Input } from '../../components';
 
 import styles from './main.module.css';
 const Main = ({match}) => {
@@ -90,9 +90,19 @@ const Main = ({match}) => {
                             <label htmlFor="title">Title</label>
                             <input id="title" type="text" value={title} onChange={e => setTitle(e.target.value)}/>
                         </div>
+                        
+                        <Input type="number" id="sum" min={10} value={sum}
+                            label="Sum" handleChange={setSum} className={styles.input}
+                        />
+                        {/* <div className={styles.sum}>
+                            <label htmlFor="sum">Sum</label>
+                            <input id="sum" type="number" min={10}  value={sum}
+                                onChange={e => setSum(e.target.value<10?10:e.target.value)}/>
+                        </div> */}
                         <div className={styles.length}>
                             <label htmlFor="length">Number of digits</label>
-                            <input id="length" type="number" min={1} max={5} value={digits} onChange={e => setDigits(e.target.value>5?5:e.target.value)}/>
+                            <input id="length" type="number" min={1} max={5} value={digits}
+                                onChange={e => setDigits(e.target.value>5?5:e.target.value)}/>
                         </div>
                         <div className={styles.orientation}>
                             <label htmlFor="orientation">Orientation</label>
