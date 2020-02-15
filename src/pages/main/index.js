@@ -17,9 +17,39 @@ const Main = ({match}) => {
     const [orientation, setOrientation] = useState("Vertical");
     const [problems, setProblems] = useState(30);
     const [show, setShow] = useState(false);
-    const [operator, setOperator] = useState("+");
     const [results, setResults] = useState([]);
     const [sum, setSum] = useState(20);
+
+    // Set Operator
+    var operator = "+";
+    switch(type) {
+        case "addition":
+            operator = "+";
+            break;
+        case "subtraction":
+            operator = "-";
+            break;
+        case "multiplication":
+            operator = "x";
+            break;
+        case "division":
+            operator = "÷";
+            break;
+        case "adsubfamilies":
+            operator = "addfamily";
+            break;
+        case "multipleFamily":
+            operator = "multfamily";
+            break;
+        case "graphPaper":
+            operator = "graph";
+            break;
+        case "numberline":
+            operator = "line";
+            break;
+        default:
+            operator = "+";
+    }
 
     const generateProblems = () => {
         // Generate Number arrays
@@ -37,44 +67,34 @@ const Main = ({match}) => {
         // Set Operator
         switch(type) {
             case "addition":
-                setOperator("+");
+            case "multiplication":
                 break;
             case "subtraction":
                 array = [];
                 for(i = 0 ; i < problems ; i ++) {
                     array.push(getSubtractionPair(digits, i));
                 }
-                setOperator("-");
-                break;
-            case "multiplication":
-                setOperator("x");
                 break;
             case "division":
                 array = [];
                 for(i = 0 ; i < problems ; i ++) {
                     array.push(getDivisionPair(digits, i));
                 }
-                setOperator("÷");
                 break;
             case "adsubfamilies":
                 array = [];
                 for(i = 0 ; i < problems ; i ++) {
                     array.push(getAddSubFactFamily(sum, i));
                 }
-                console.log(array);
-                setOperator("addfamily");
                 break;
             case "multipleFamily":
-                setOperator("multfamily");
                 break;
             case "graphPaper":
-                setOperator("graph");
                 break;
             case "numberline":
-                setOperator("line");
                 break;
             default:
-                setOperator("+");
+                break;
         }
 
         setResults(array);
@@ -87,15 +107,24 @@ const Main = ({match}) => {
                 <div className="row">
                     <div className={styles.selectPanel}>
                         <Input type="text" id="title" min={10} value={title}
-                            label="Title" handleChange={setTitle} className={styles.input}
+                            label="Title" handleChange={setTitle}
                         />
-                        <Input type="number" id="sum" min={10} value={sum}
-                            label="Sum" handleChange={setSum} className={styles.input}
-                        />
+                        {
+                            (operator === "addfamily" || operator === "multfamily") &&
+                            <Input type="number" id="sum" min={10} value={sum}
+                                label="Sum" handleChange={setSum}
+                            />
+                        }
 
-                        <Input type="number" id="length" min={1} max={5} value={digits}
-                            label="Number of digits" handleChange={setDigits} className={styles.input}
-                        />
+                        {
+                            (
+                                operator === "+" || operator === "-" || operator === "x" || operator === "÷"
+                            ) &&
+                            <Input type="number" id="length" min={1} max={5} value={digits}
+                                label="Number of digits" handleChange={setDigits}
+                            />
+                        }
+
                         <div className={styles.orientation}>
                             <label htmlFor="orientation">Orientation</label>
                             <select id="orientation" value={orientation} onChange={e=>setOrientation(e.target.value)}>
@@ -109,7 +138,7 @@ const Main = ({match}) => {
                         </div>
 
                         <Input type="number" id="problems" min={1} max={80} value={problems}
-                            label="Number of problems" handleChange={setProblems} className={styles.input}
+                            label="Number of problems" handleChange={setProblems}
                         />
                         <Button onClick={generateProblems}>Generate!</Button>
                     </div>
@@ -121,7 +150,19 @@ const Main = ({match}) => {
                             </p>
                         }
                         {
-                            show && 
+                            show &&                             
+                            (operator === "addfamily" || operator === "multfamily") ?
+                            <div className={styles.familyResults}>
+                                {
+                                    results.map(element => {
+                                        return <Triangle 
+                                            key = {element.id.toString()}
+                                            data={element}
+                                            operator={operator} 
+                                        />;
+                                    })
+                                }
+                            </div> :
                             (operator === "+" || operator === "-" || operator === "x" || operator === "÷") ?
                             <div className={styles.calcResults}>
                                 {
@@ -135,20 +176,14 @@ const Main = ({match}) => {
                                     })
                                 }
                             </div> : 
-                            (operator === "addfamily" || operator === "multfamily") ?
-                            <div className={styles.familyResults}>
-                                {
-                                    results.map(element => {
-                                        return <Triangle 
-                                            key = {element.id.toString()}
-                                            data={element}
-                                            operator={operator} 
-                                        />;
-                                    })
-                                }
-                            </div> :
                             <div className={styles.graph}>
                                 I am waiting for your options
+                            </div>
+                        }
+                        {
+                            !show && 
+                            <div className={styles.graph}>
+                                Set whatever you want to generate!!!
                             </div>
                         }
                     </div>

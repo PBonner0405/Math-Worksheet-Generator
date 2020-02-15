@@ -1,5 +1,5 @@
 import React from 'react';
-
+import classnames from 'classnames';
 import styles from './input.module.css';
 
 const Input = ({
@@ -9,7 +9,8 @@ const Input = ({
     label,
     handleChange,
     max=99999,
-    min=1
+    min=1,
+    className
 }) => {
 
     const validate = (rs) => {
@@ -22,7 +23,7 @@ const Input = ({
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className={classnames(styles.wrapper, className?className:"")}>
             <label htmlFor={id}>{label}</label>
             <input id={id} type={type} value={value}
                 onChange={e => handleChange(validate(e.target.value))}/>
