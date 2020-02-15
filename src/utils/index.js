@@ -32,7 +32,7 @@ const getDivisionPair = (length, index) => {
         {
             result = {
                 id: index,
-                first: (num1>num2?num1:num2),
+                first: num1>num2?num1:num2,
                 second: (num1>num2?num1:num2)/getGCD(num1, num2)
             }
             break;
@@ -41,9 +41,20 @@ const getDivisionPair = (length, index) => {
     return result;
 }
 
+const getSubstractionPair = (length, index) => {
+    var num1 = getRandomNumber(length);
+    var num2 = getRandomNumber(length);
+    return {
+        id: index,
+        first: num1>num2?num1:num2,
+        second: num1>num2?num2:num1
+    }
+}
+
 export {
     getRandomNumber,
     getDivisionPair,
+    getSubstractionPair,
     getGCD,
     getLCM,
 }
