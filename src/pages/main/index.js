@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button'
-import { getRandomNumber } from '../../utils';
+import { getRandomNumber, getDivisionPair } from '../../utils';
 import { Calc, Triangle } from '../../components';
 
 import styles from './main.module.css';
@@ -27,7 +27,6 @@ const Main = ({match}) => {
                 }
             )
         }
-        setResults(array);
 
         // Set Operator
         switch(type) {
@@ -35,13 +34,21 @@ const Main = ({match}) => {
                 setOperator("+");
                 break;
             case "subtraction":
+                array = [];
+                for(i = 0 ; i < problems ; i ++) {
+                    array.push(getDivisionPair(digits, i));
+                }
                 setOperator("-");
                 break;
             case "multiplication":
                 setOperator("x");
                 break;
             case "division":
-                setOperator("/");
+                array = [];
+                for(i = 0 ; i < problems ; i ++) {
+                    array.push(getDivisionPair(digits, i));
+                }
+                setOperator("÷");
                 break;
             case "adsubfamilies":
                 setOperator("addfamily");
@@ -58,6 +65,8 @@ const Main = ({match}) => {
             default:
                 setOperator("+");
         }
+
+        setResults(array);
         setShow(true);
     }
 
@@ -100,7 +109,7 @@ const Main = ({match}) => {
                         }
                         {
                             show && 
-                            (operator === "+" || operator === "-" || operator === "x" || operator === "/") ?
+                            (operator === "+" || operator === "-" || operator === "x" || operator === "÷") ?
                             <div className={styles.calcResults}>
                                 {
                                     results.map(element => {
