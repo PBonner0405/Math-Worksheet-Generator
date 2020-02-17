@@ -16,8 +16,10 @@ const useResize = (myRef) => {
     const [height, setHeight] = useState('')
 
     const handleResize = () => {
-        setWidth(myRef.current.offsetWidth)
-        setHeight(myRef.current.offsetHeight)
+        if(myRef.current){
+            setWidth(myRef.current.offsetWidth)
+            setHeight(myRef.current.offsetHeight)
+        }
     }
 
     useEffect(() => {
@@ -44,7 +46,6 @@ const Main = ({match}) => {
     const { type="addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
     const [digits, setDigits] = useState(2);
-    const [orientation, setOrientation] = useState("Vertical");
     const [problems, setProblems] = useState(30);
     const [show, setShow] = useState(false);
     const [results, setResults] = useState([]);
@@ -52,6 +53,10 @@ const Main = ({match}) => {
     const [max, setMax] = useState(5);
 
     const [unit, setUnit] = useState(4);
+    const [start, setStart] = useState(1);
+    const [end, setEnd] = useState(10);
+    const [increment, setIncrement]= useState(1);
+    const [lines, setLines] = useState(7);
 
     // Set Operator
     var operator = "+";
@@ -149,7 +154,7 @@ const Main = ({match}) => {
     return (
         <main className={styles.wrapper}>
             <div className="container">
-                <div className="row">
+                <div className="row" style={{height: "100%"}}>
                     <div className={styles.selectPanel}>
                         <Input type="text" id="title" min={10} value={title}
                             label="Title" handleChange={setTitle}
@@ -181,21 +186,33 @@ const Main = ({match}) => {
                                 label="Lines per Unit" handleChange={setUnit}
                             />
                         }
-                        <div className={styles.orientation}>
-                            <label htmlFor="orientation">Orientation</label>
-                            <select id="orientation" value={orientation} onChange={e=>setOrientation(e.target.value)}>
-                                <option value="Vertical">
-                                    Vertical
-                                </option>
-                                <option value="Horizontal">
-                                    Horizontal
-                                </option>
-                            </select>
-                        </div>
-
-                        <Input type="number" id="problems" min={1} max={80} value={problems}
-                            label="Number of problems" handleChange={setProblems}
-                        />
+                        {
+                            (
+                                operator === "+" || operator === "-" || operator === "x" || operator === "÷"
+                            ) &&
+                            <Input type="number" id="problems" min={1} max={80} value={problems}
+                                label="Number of problems" handleChange={setProblems}
+                            />
+                        }
+                        {
+                            (
+                                operator === "line"
+                            ) &&
+                            <div className={styles.lineInput}>
+                                <Input type="number" id="start" min={1} max={8} value={start}
+                                    label="Starting Number" handleChange={setStart}
+                                />
+                                <Input type="number" id="end" min={10} max={20} value={end}
+                                    label="Ending Number" handleChange={setEnd}
+                                />
+                                <Input type="number" id="increment" min={1} max={8} value={increment}
+                                    label="Increment" handleChange={setIncrement}
+                                />
+                                <Input type="number" id="lines" min={1} max={8} value={lines}
+                                    label="Lines per page" handleChange={setLines}
+                                />
+                            </div>
+                        }
                         <Button onClick={generateProblems}>Generate!</Button>
 
                         {
