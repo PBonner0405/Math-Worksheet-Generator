@@ -17,7 +17,7 @@ const Input = ({
         if(type === "number"){
             if(rs > max) rs = max;
             if(rs < min) rs = min;
-            return rs;
+            return parseInt(rs);
         }
         if(type === "text") return rs;
     }
