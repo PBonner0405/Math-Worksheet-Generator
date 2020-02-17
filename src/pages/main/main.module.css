@@ -133,7 +133,7 @@
 
 .horiX {
     position: absolute;
-    top: 50%;
+    top: calc((100% - 2px) / 2);
     left: 8px;
     width: calc(100% - 16px);
     height: 2px;
@@ -142,7 +142,7 @@
 
 .verY {
     position: absolute;
-    left: 50%;
+    left: calc((100% - 2px) / 2);
     top: 8px;
     width: 2px;
     height: calc(100% - 16px);
