@@ -20,6 +20,7 @@ const Main = ({match}) => {
     const [show, setShow] = useState(false);
     const [results, setResults] = useState([]);
     const [sum, setSum] = useState(20);
+    const [max, setMax] = useState(5);
 
     // Set Operator
     var operator = "+";
@@ -91,7 +92,7 @@ const Main = ({match}) => {
             case "multipleFamily":
                 array = [];
                 for(i = 0 ; i < 8 ; i ++) {
-                    array.push(getMultiDiviFactFamily(sum, i));
+                    array.push(getMultiDiviFactFamily(max, i));
                 }
                 break;
             case "graphPaper":
@@ -120,8 +121,8 @@ const Main = ({match}) => {
                                 label="Sum" handleChange={setSum}
                             /> :
                             operator === "multfamily" &&
-                            <Input type="number" id="sum" min={9} value={sum}
-                                label="Result of Multiply" handleChange={setSum}
+                            <Input type="number" id="sum" min={5} max={999} value={max}
+                                label="Operand Max Number" handleChange={setMax}
                             />
                         }
 
