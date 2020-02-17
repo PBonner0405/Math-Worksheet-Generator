@@ -1,0 +1,83 @@
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex: 1;
+    position: relative;
+    align-items: center;
+}
+
+.wrapper > span {
+    display: flex;
+    position: relative;
+    align-items: center;
+    flex: 1;
+}
+
+.wrapper > span > p {
+    margin-bottom: 0px;
+    margin-top: -1px;
+    position: absolute;
+}
+
+.wrapper > span:last-child {
+    justify-content: flex-end;
+    flex: 0;
+}
+
+.wrapper > span:first-child::after {
+    content: '';
+    position: absolute;
+    display: flex;
+    flex: 1;
+    height: 1px;
+    background: black;
+    left: 3px;
+    width: 100%;
+}
+
+.numbers {
+    display: flex;
+    flex-direction: row;
+}
+
+.numbers > div {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.numbers > div:last-child {
+    flex: 1;
+}
+
+.label {
+    margin-bottom: 0px;
+    position: absolute;
+    left: -2px;
+    top: 6px;
+}
+
+.lines {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    flex: 1;
+    align-items: center;
+    width: 100%;
+}
+
+.lines div:first-child {
+    width: 1px;
+    height: 6px;
+    background: black;
+}
+
+.lines div:last-child {
+    height: 1px;
+    width: 100%;
+    background: black;
+}

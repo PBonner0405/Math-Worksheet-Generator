@@ -7,7 +7,7 @@ import {
     getAddSubFactFamily,
     getMultiDiviFactFamily
 } from '../../utils';
-import { Calc, Triangle, Input } from '../../components';
+import { Calc, Triangle, Input, NumberLine } from '../../components';
 
 import styles from './main.module.css';
 
@@ -142,6 +142,14 @@ const Main = ({match}) => {
                 }
                 break;
             case "numberline":
+                array = [];
+                for(i = 0 ; i <  lines ; i ++) {
+                    var row = [];
+                    for(var indent = 0 ; (start + indent * increment) <= end ; indent ++) 
+                        row.push(start + indent * increment)
+                    array.push(row)
+                }
+                console.log(array, start, indent, increment, end);
                 break;
             default:
                 break;
@@ -276,6 +284,13 @@ const Main = ({match}) => {
                             </div> :
                             operator === "line" &&
                             <div className={styles.numberline}>
+                                {
+                                    results.map((element, index) => {
+                                        return <NumberLine content={element} key= {index.toString()}>
+
+                                        </NumberLine>
+                                    })
+                                }
                             </div>
                         }
                     </div>
