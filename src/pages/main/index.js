@@ -39,6 +39,7 @@ const Main = ({match}) => {
 
     const graphRef = useRef(null);
     const { width, height } = useResize(graphRef)
+    console.log(width, height);
 
     const { type="addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
