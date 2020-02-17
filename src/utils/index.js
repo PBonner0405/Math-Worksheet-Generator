@@ -73,14 +73,23 @@ const getSubtractionPair = (length, index) => {
 // Get Addition and Subtraction Fact Family
 const getAddSubFactFamily = (sum, index) => {
     const len = sum.toString().length
-    var first = getRandomNumber(len) % sum;
-    var second = getRandomNumber(len) % sum;
-    return {
-        id: index,
-        first: first,
-        second: second,
-        last: Math.abs(first - second)
+    var cnt = 10;
+    var result;
+    while(cnt > 0) {
+        var first = getRandomNumber(len) % sum;
+        var second = getRandomNumber(len) % sum;
+        if(first > 1 && second > 1 && Math.abs(first - second) > 1)
+        {
+            result = {
+                id: index,
+                first: first,
+                second: second,
+                last: Math.abs(first - second)
+            }
+            break;
+        }
     }
+    return result;
 }
 
 // Get Addition and Subtraction Fact Family
