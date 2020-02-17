@@ -23,10 +23,12 @@ const useResize = (myRef) => {
     useEffect(() => {
         window.addEventListener('resize', handleResize)
         window.addEventListener('load', handleResize)
+        window.addEventListener('focusin', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
             window.addEventListener('load', handleResize)
+            window.addEventListener('focusin', handleResize)
         }
     }, [myRef])
 
@@ -34,8 +36,6 @@ const useResize = (myRef) => {
 }
 
 const Main = ({match}) => {
-
-    const gridUnits = ["Inches", "Milimeters"];
 
     const graphRef = useRef(null);
     const { width, height } = useResize(graphRef)
@@ -51,7 +51,6 @@ const Main = ({match}) => {
     const [max, setMax] = useState(5);
 
     const [unit, setUnit] = useState(4);
-
 
     // Set Operator
     var operator = "+";
@@ -221,6 +220,7 @@ const Main = ({match}) => {
                                         return <Triangle 
                                             key = {element.id.toString()}
                                             data={element}
+                                            operator={operator}
                                         />;
                                     })
                                 }

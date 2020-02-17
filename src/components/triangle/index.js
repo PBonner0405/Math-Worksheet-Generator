@@ -3,7 +3,7 @@ import React from 'react';
 import { Problem } from '../../components';
 import styles from './triangle.module.css';
 
-const Triangle = ({ data, isNumber=true}) => {
+const Triangle = ({ data, isNumber=true, operator}) => {
     return (
         <div className={styles.wrapper}>
             {
@@ -16,12 +16,24 @@ const Triangle = ({ data, isNumber=true}) => {
                 <p>{data.last}</p>
 
             </div>
-            <div className={styles.problems}>
-                <Problem operator="+" />
-                <Problem operator="+" />
-                <Problem operator="-" />
-                <Problem operator="-" />
-            </div>
+            {
+                operator === "addfamily" && 
+                <div className={styles.problems}>
+                    <Problem operator="+" />
+                    <Problem operator="+" />
+                    <Problem operator="-" />
+                    <Problem operator="-" />
+                </div>
+            }
+            {
+                operator === "multfamily" && 
+                <div className={styles.problems}>
+                    <Problem operator="x" />
+                    <Problem operator="x" />
+                    <Problem operator="÷" />
+                    <Problem operator="÷" />
+                </div>
+            }
         </div>
     );
 }
