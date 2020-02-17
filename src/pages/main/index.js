@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Button from 'react-bootstrap/Button'
 import { 
     getRandomNumber,
@@ -10,7 +10,35 @@ import {
 import { Calc, Triangle, Input } from '../../components';
 
 import styles from './main.module.css';
+
+const useResize = (myRef) => {
+    const [width, setWidth] = useState('')
+    const [height, setHeight] = useState('')
+
+    const handleResize = () => {
+        setWidth(myRef.current.offsetWidth)
+        setHeight(myRef.current.offsetHeight)
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize)
+        window.addEventListener('load', handleResize)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+            window.addEventListener('load', handleResize)
+        }
+    }, [myRef])
+
+    return { width, height }
+}
+
 const Main = ({match}) => {
+
+    const gridUnits = ["Inches", "Milimeters"];
+
+    const graphRef = useRef(null);
+    const { width, height } = useResize(graphRef)
 
     const { type="addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
@@ -21,6 +49,9 @@ const Main = ({match}) => {
     const [results, setResults] = useState([]);
     const [sum, setSum] = useState(20);
     const [max, setMax] = useState(5);
+
+    const [unit, setUnit] = useState(4);
+
 
     // Set Operator
     var operator = "+";
@@ -96,6 +127,14 @@ const Main = ({match}) => {
                 }
                 break;
             case "graphPaper":
+                array = [];
+                // DPI : 60
+                for(i = 0 ; i <  Math.floor(unit * height / 60) ; i ++) {
+                    var colContent = [];
+                    for(var k = 0 ; k < Math.floor(unit * width / 60) ; k ++) 
+                        colContent.push("")
+                    array.push(colContent)
+                }
                 break;
             case "numberline":
                 break;
@@ -130,11 +169,18 @@ const Main = ({match}) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="length" min={1} max={5} value={digits}
+                            <Input type="number" id="digits" min={1} max={5} value={digits}
                                 label="Number of digits" handleChange={setDigits}
                             />
                         }
-
+                        {
+                            (
+                                operator === "graph"
+                            ) &&
+                            <Input type="number" id="units" min={1} max={8} value={unit}
+                                label="Lines per Unit" handleChange={setUnit}
+                            />
+                        }
                         <div className={styles.orientation}>
                             <label htmlFor="orientation">Orientation</label>
                             <select id="orientation" value={orientation} onChange={e=>setOrientation(e.target.value)}>
@@ -151,6 +197,13 @@ const Main = ({match}) => {
                             label="Number of problems" handleChange={setProblems}
                         />
                         <Button onClick={generateProblems}>Generate!</Button>
+
+                        {
+                            !show && 
+                            <div className={styles.alert}>
+                                Set whatever you want to generate!!!
+                            </div>
+                        }
                     </div>
                     <div className={styles.previewWorksheet}>
                         {
@@ -185,14 +238,26 @@ const Main = ({match}) => {
                                     })
                                 }
                             </div> : 
-                            <div className={styles.graph}>
-                                I am waiting for your options
-                            </div>
-                        }
-                        {
-                            !show && 
-                            <div className={styles.graph}>
-                                Set whatever you want to generate!!!
+                            operator === "graph" ? 
+                            <div className={styles.graph} ref={graphRef}>
+                                {
+                                    results.map((element, index) => {
+                                        return <div key={index.toString()}>
+                                            {
+                                                element.map((item, ind) => {
+                                                    return <span key = {ind.toString()}></span>
+                                                })
+                                            }
+                                        </div>
+                                    })
+                                }
+                                <span className={styles.horiX}>
+                                </span>
+                                <span className={styles.verY}>
+                                </span>
+                            </div> :
+                            operator === "line" &&
+                            <div className={styles.numberline}>
                             </div>
                         }
                     </div>
