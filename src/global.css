@@ -9,6 +9,13 @@
   --black: hsla(0, 0%, 0%, 0.9);
   --white: hsl(0, 0%, 100%);
   --light--green: hsl(175, 23%, 49%);
+  --success: hsl(134, 41%, 83%);
+  --success--label: hsl(134, 61%, 21%);
+  --warning--label: hsl(45, 94%, 27%);
+  --warning: hsl(46, 100%, 90%);
+  --error--label: hsl(354,61%, 28%);
+  --error: hsl(355,70%, 91%);
+
 }
 
 body {

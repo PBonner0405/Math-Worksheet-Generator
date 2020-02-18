@@ -73,34 +73,74 @@ const getSubtractionPair = (length, index) => {
 // Get Addition and Subtraction Fact Family
 const getAddSubFactFamily = (sum, index) => {
     const len = sum.toString().length
-    var first = getRandomNumber(len) % sum;
-    var second = getRandomNumber(len) % sum;
-    return {
-        id: index,
-        first: first,
-        second: second,
-        last: Math.abs(first - second)
-    }
-}
-
-// Get Addition and Subtraction Fact Family
-const getMultiDiviFactFamily = (multiply, index) => {
-    const len = multiply.toString().length
+    var cnt = 10;
     var result;
-    while(true) {
-        var num1 = getRandomNumber(len) % multiply;
-        var num2 = getRandomNumber(len) % multiply;
-        if(getGCD(num1, num2) > 10)
+    while(cnt > 0) {
+        var first = getRandomNumber(len) % sum;
+        var second = getRandomNumber(len) % sum;
+        if(first > 1 && second > 1 && Math.abs(first - second) > 1)
         {
             result = {
                 id: index,
-                first: num1>num2?num1:num2,
-                second: getSecondDivisionValue(num1, num2),
-                last: (num1>num2?num1:num2) / getSecondDivisionValue(num1, num2),
+                first: first,
+                second: second,
+                last: Math.abs(first - second)
             }
             break;
         }
     }
+    return result;
+}
+
+// Get Addition and Subtraction Fact Family
+const getMultiDiviFactFamily = (max, index) => {
+    const len = max.toString().length
+    var result;
+    var cnt = 0;
+    while(true) {
+        var num1 = getRandomNumber(len) % max;
+        var num2 = getRandomNumber(len) % max;
+
+        console.log(max, num1, num2);
+        var res = num1 * num2;
+        cnt ++;
+        if((num1 > 1 && num2 > 1) && (num1 < max && num2 < max)){
+            if((index * 4) % 3 === 1)
+                result = {
+                    id: index,
+                    first: res,
+                    second: num1,
+                    last: num2
+                }
+            if((index * 4) % 3 === 2)
+                result = {
+                    id: index,
+                    first: num1,
+                    second: res,
+                    last: num2
+                }
+            if((index * 4) % 3 === 0)
+                result = {
+                    id: index,
+                    first: num1,
+                    second: num2,
+                    last: res
+                }
+            break;
+        }
+        if(cnt > 10) {
+            num1 = Math.floor(Math.random() * (+max - +2)) + +2;
+            num2 = Math.floor(Math.random() * (+max - +3)) + +3;
+            result = {
+                id: index,
+                first: num1,
+                second: num1 * num2,
+                last: num2
+            }
+        }
+
+    }
+    
     return result;
 }
 

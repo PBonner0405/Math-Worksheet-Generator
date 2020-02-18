@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Button from 'react-bootstrap/Button'
 import { 
     getRandomNumber,
@@ -7,20 +7,60 @@ import {
     getAddSubFactFamily,
     getMultiDiviFactFamily
 } from '../../utils';
-import { Calc, Triangle, Input } from '../../components';
+import { Calc, Triangle, Input, NumberLine, Alert } from '../../components';
 
 import styles from './main.module.css';
+
+const useResize = (myRef) => {
+    const [width, setWidth] = useState('')
+    const [height, setHeight] = useState('')
+
+    const handleResize = () => {
+        if(myRef.current){
+            setWidth(myRef.current.offsetWidth)
+            setHeight(myRef.current.offsetHeight)
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize)
+        window.addEventListener('load', handleResize)
+        window.addEventListener('focusin', handleResize)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+            window.addEventListener('load', handleResize)
+            window.addEventListener('focusin', handleResize)
+        }
+    }, [myRef])
+
+    return { width, height }
+}
+
 const Main = ({match}) => {
+
+    const graphRef = useRef(null);
+    const { width, height } = useResize(graphRef)
+    console.log(width, height);
 
     const { type="addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
     const [digits, setDigits] = useState(2);
-    const [orientation, setOrientation] = useState("Vertical");
     const [problems, setProblems] = useState(30);
     const [show, setShow] = useState(false);
     const [results, setResults] = useState([]);
     const [sum, setSum] = useState(20);
+    const [max, setMax] = useState(5);
 
+    const [unit, setUnit] = useState(4);
+    const [start, setStart] = useState(1);
+    const [end, setEnd] = useState(10);
+    const [increment, setIncrement]= useState(1);
+    const [lines, setLines] = useState(7);
+
+    const [alert, setAlert] = useState(false);
+    const [error, setError] = useState("");
+    const [errorType, setErrorType] = useState("primary");
     // Set Operator
     var operator = "+";
     switch(type) {
@@ -91,25 +131,60 @@ const Main = ({match}) => {
             case "multipleFamily":
                 array = [];
                 for(i = 0 ; i < 8 ; i ++) {
-                    array.push(getMultiDiviFactFamily(sum, i));
+                    array.push(getMultiDiviFactFamily(max, i));
                 }
                 break;
             case "graphPaper":
+                array = [];
+                // DPI : 60
+                for(i = 0 ; i <  Math.floor(unit * height / 60) ; i ++) {
+                    var colContent = [];
+                    for(var k = 0 ; k < Math.floor(unit * width / 60) ; k ++) 
+                        colContent.push("")
+                    array.push(colContent)
+                }
                 break;
             case "numberline":
+                if(Math.floor(end / increment) > 25)
+                {
+                    showAlert("Can't display too much numbers across a line");
+                    setErrorType("error");
+                    array = [];
+                    break;
+                }
+                array = [];
+                for(i = 0 ; i <  lines ; i ++) {
+                    var row = [];
+                    for(var indent = 0 ; (start + indent * increment) <= end ; indent ++) 
+                        row.push(start + indent * increment)
+                    array.push(row)
+                }
+                console.log(array, start, indent, increment, end);
                 break;
             default:
                 break;
         }
 
         setResults(array);
-        setShow(true);
+        if(!alert)
+            setShow(true);
+    }
+
+    const showAlert = (error) => {
+        setError(error);
+        setAlert(true);
+    }
+
+    const hideAlert = () => {
+        setAlert(false);
     }
 
     return (
         <main className={styles.wrapper}>
+            <Alert label={error} handleClose={hideAlert} type={errorType}
+                    className={alert? styles.showAlert : styles.hideAlert}/>
             <div className="container">
-                <div className="row">
+                <div className="row" style={{height: "100%"}}>
                     <div className={styles.selectPanel}>
                         <Input type="text" id="title" min={10} value={title}
                             label="Title" handleChange={setTitle}
@@ -120,8 +195,8 @@ const Main = ({match}) => {
                                 label="Sum" handleChange={setSum}
                             /> :
                             operator === "multfamily" &&
-                            <Input type="number" id="sum" min={9} value={sum}
-                                label="Result of Multiply" handleChange={setSum}
+                            <Input type="number" id="sum" min={5} max={999} value={max}
+                                label="Operand Max Number" handleChange={setMax}
                             />
                         }
 
@@ -129,27 +204,53 @@ const Main = ({match}) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="length" min={1} max={5} value={digits}
+                            <Input type="number" id="digits" min={1} max={5} value={digits}
                                 label="Number of digits" handleChange={setDigits}
                             />
                         }
-
-                        <div className={styles.orientation}>
-                            <label htmlFor="orientation">Orientation</label>
-                            <select id="orientation" value={orientation} onChange={e=>setOrientation(e.target.value)}>
-                                <option value="Vertical">
-                                    Vertical
-                                </option>
-                                <option value="Horizontal">
-                                    Horizontal
-                                </option>
-                            </select>
-                        </div>
-
-                        <Input type="number" id="problems" min={1} max={80} value={problems}
-                            label="Number of problems" handleChange={setProblems}
-                        />
+                        {
+                            (
+                                operator === "graph"
+                            ) &&
+                            <Input type="number" id="units" min={1} max={8} value={unit}
+                                label="Lines per Unit" handleChange={setUnit}
+                            />
+                        }
+                        {
+                            (
+                                operator === "+" || operator === "-" || operator === "x" || operator === "÷"
+                            ) &&
+                            <Input type="number" id="problems" min={1} max={80} value={problems}
+                                label="Number of problems" handleChange={setProblems}
+                            />
+                        }
+                        {
+                            (
+                                operator === "line"
+                            ) &&
+                            <div className={styles.lineInput}>
+                                <Input type="number" id="start" min={1} max={8} value={start}
+                                    label="Starting Number" handleChange={setStart}
+                                />
+                                <Input type="number" id="end" value={end}
+                                    label="Ending Number" handleChange={setEnd}
+                                />
+                                <Input type="number" id="increment" min={1} max={8} value={increment}
+                                    label="Increment" handleChange={setIncrement}
+                                />
+                                <Input type="number" id="lines" min={1} max={8} value={lines}
+                                    label="Lines per page" handleChange={setLines}
+                                />
+                            </div>
+                        }
                         <Button onClick={generateProblems}>Generate!</Button>
+
+                        {
+                            !show && 
+                            <div className={styles.alert}>
+                                Set whatever you want to generate!!!
+                            </div>
+                        }
                     </div>
                     <div className={styles.previewWorksheet}>
                         {
@@ -167,6 +268,7 @@ const Main = ({match}) => {
                                         return <Triangle 
                                             key = {element.id.toString()}
                                             data={element}
+                                            operator={operator}
                                         />;
                                     })
                                 }
@@ -184,14 +286,33 @@ const Main = ({match}) => {
                                     })
                                 }
                             </div> : 
-                            <div className={styles.graph}>
-                                I am waiting for your options
-                            </div>
-                        }
-                        {
-                            !show && 
-                            <div className={styles.graph}>
-                                Set whatever you want to generate!!!
+                            operator === "graph" ? 
+                            <div className={styles.graph} ref={graphRef}>
+                                {
+                                    results.map((element, index) => {
+                                        return <div key={index.toString()}>
+                                            {
+                                                element.map((item, ind) => {
+                                                    return <span key = {ind.toString()}></span>
+                                                })
+                                            }
+                                        </div>
+                                    })
+                                }
+                                <span className={styles.horiX}>
+                                </span>
+                                <span className={styles.verY}>
+                                </span>
+                            </div> :
+                            operator === "line" &&
+                            <div className={styles.numberline}>
+                                {
+                                    !alert && results.map((element, index) => {
+                                        return <NumberLine content={element} key= {index.toString()}>
+
+                                        </NumberLine>
+                                    })
+                                }
                             </div>
                         }
                     </div>
