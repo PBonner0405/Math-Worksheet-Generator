@@ -159,7 +159,6 @@ const Main = ({match}) => {
                         row.push(start + indent * increment)
                     array.push(row)
                 }
-                console.log(array, start, indent, increment, end);
                 break;
             default:
                 break;
