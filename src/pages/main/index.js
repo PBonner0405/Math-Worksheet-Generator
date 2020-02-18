@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
 import { 
     getRandomNumber,
     getDivisionPair,
@@ -124,13 +127,13 @@ const Main = ({match}) => {
                 break;
             case "adsubfamilies":
                 array = [];
-                for(i = 0 ; i < 8 ; i ++) {
+                for(i = 0 ; i < 9 ; i ++) {
                     array.push(getAddSubFactFamily(sum, i));
                 }
                 break;
             case "multipleFamily":
                 array = [];
-                for(i = 0 ; i < 8 ; i ++) {
+                for(i = 0 ; i < 9 ; i ++) {
                     array.push(getMultiDiviFactFamily(max, i));
                 }
                 break;
@@ -178,12 +181,37 @@ const Main = ({match}) => {
         setAlert(false);
     }
 
+    const heightPxToMm = (px) => {
+        return Math.floor(px/document.getElementById('myMm').offsetHeight);
+    };
+
+    const widthPxToMm = (px) => {
+        return Math.floor(px/document.getElementById('myMm').offsetWidth);
+    };
+    
+    const mmToPx = (mm) => {
+        return document.getElementById('myMm').offsetHeight*mm;
+    };
+
+    const downloadPdf = () => {
+        const result = document.getElementById("result");
+        html2canvas(result)
+        .then(
+            (canvas) => {
+                const imgData = canvas.toDataURL("image/png");
+                const pdf = new jsPDF('p', 'mm', "a4");
+                pdf.addImage(imgData, 'PNG', 0, 0);
+                pdf.save("result.pdf");
+            }
+        )
+    }
+
     return (
         <main className={styles.wrapper}>
             <Alert label={error} handleClose={hideAlert} type={errorType}
                     className={alert? styles.showAlert : styles.hideAlert}/>
             <div className="container">
-                <div className="row" style={{height: "100%"}}>
+                <div className="row" style={{height: "100%", "justify-content": "center"}}>
                     <div className={styles.selectPanel}>
                         <Input type="text" id="title" min={10} value={title}
                             label="Title" handleChange={setTitle}
@@ -243,6 +271,12 @@ const Main = ({match}) => {
                             </div>
                         }
                         <Button onClick={generateProblems}>Generate!</Button>
+                        {
+                            show && <Button onClick={downloadPdf}>
+                                Download PDF
+                                <div id="myMm" style={{height: "1mm", width: "1mm"}} />
+                            </Button>
+                        }
 
                         {
                             !show && 
@@ -251,7 +285,7 @@ const Main = ({match}) => {
                             </div>
                         }
                     </div>
-                    <div className={styles.previewWorksheet}>
+                    <div className={styles.previewWorksheet} id="result">
                         {
                             title !== "" &&
                             <p>

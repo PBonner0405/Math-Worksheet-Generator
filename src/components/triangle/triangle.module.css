@@ -10,7 +10,7 @@
 .triangle {
     display: flex;
     min-width: 200px;
-    min-height: 180px;
+    min-height: 160px;
     justify-content: center;
     position: relative;
 }
@@ -32,7 +32,7 @@
 }
 
 .triangle p:nth-child(2) {
-    left: 99px;
+    left: 106px;
     top: 32px;
     width: 36px;
     text-align: center;
@@ -41,15 +41,15 @@
 .triangle p:nth-child(3) {
     z-index: 99;
     position: absolute;
-    left: 40px;
-    bottom: 6px;
+    left: 50px;
+    bottom: -15px;
 }
 
 .triangle p:nth-child(4) {
     z-index: 99;
     position: absolute;
-    right: 40px;
-    bottom: 6px;
+    right: 50px;
+    bottom: -15px;
     width: 40px;
     text-align: right;
 }
