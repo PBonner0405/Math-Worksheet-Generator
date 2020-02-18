@@ -6,7 +6,6 @@ import Main from "../pages/main";
 import { NotFound } from "../pages/error";
 
 const Routes = () => {
-    console.log(Home);
     return (
         <Router>
             <div className="App">

@@ -101,7 +101,6 @@ const getMultiDiviFactFamily = (max, index) => {
         var num1 = getRandomNumber(len) % max;
         var num2 = getRandomNumber(len) % max;
 
-        console.log(max, num1, num2);
         var res = num1 * num2;
         cnt ++;
         if((num1 > 1 && num2 > 1) && (num1 < max && num2 < max)){
