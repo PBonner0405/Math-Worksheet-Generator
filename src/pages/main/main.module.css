@@ -155,6 +155,16 @@
     flex-direction: column;
 }
 
+.showAlert {
+    transform: scale(1);
+    transition: ease all 200ms;
+}
+
+.hideAlert {
+    transform: scale(0);
+    transition: ease all 100ms;
+}
+
 @media screen and (max-width: 1200px) {
     .calcResults {
         grid-template-columns: repeat(6, 1fr);

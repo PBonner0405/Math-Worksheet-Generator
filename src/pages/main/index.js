@@ -7,7 +7,7 @@ import {
     getAddSubFactFamily,
     getMultiDiviFactFamily
 } from '../../utils';
-import { Calc, Triangle, Input, NumberLine } from '../../components';
+import { Calc, Triangle, Input, NumberLine, Alert } from '../../components';
 
 import styles from './main.module.css';
 
@@ -58,6 +58,9 @@ const Main = ({match}) => {
     const [increment, setIncrement]= useState(1);
     const [lines, setLines] = useState(7);
 
+    const [alert, setAlert] = useState(false);
+    const [error, setError] = useState("");
+    const [errorType, setErrorType] = useState("primary");
     // Set Operator
     var operator = "+";
     switch(type) {
@@ -142,6 +145,13 @@ const Main = ({match}) => {
                 }
                 break;
             case "numberline":
+                if(Math.floor(end / increment) > 25)
+                {
+                    showAlert("Can't display too much numbers across a line");
+                    setErrorType("error");
+                    array = [];
+                    break;
+                }
                 array = [];
                 for(i = 0 ; i <  lines ; i ++) {
                     var row = [];
@@ -156,11 +166,23 @@ const Main = ({match}) => {
         }
 
         setResults(array);
-        setShow(true);
+        if(!alert)
+            setShow(true);
+    }
+
+    const showAlert = (error) => {
+        setError(error);
+        setAlert(true);
+    }
+
+    const hideAlert = () => {
+        setAlert(false);
     }
 
     return (
         <main className={styles.wrapper}>
+            <Alert label={error} handleClose={hideAlert} type={errorType}
+                    className={alert? styles.showAlert : styles.hideAlert}/>
             <div className="container">
                 <div className="row" style={{height: "100%"}}>
                     <div className={styles.selectPanel}>
@@ -210,7 +232,7 @@ const Main = ({match}) => {
                                 <Input type="number" id="start" min={1} max={8} value={start}
                                     label="Starting Number" handleChange={setStart}
                                 />
-                                <Input type="number" id="end" min={10} max={20} value={end}
+                                <Input type="number" id="end" value={end}
                                     label="Ending Number" handleChange={setEnd}
                                 />
                                 <Input type="number" id="increment" min={1} max={8} value={increment}
@@ -285,7 +307,7 @@ const Main = ({match}) => {
                             operator === "line" &&
                             <div className={styles.numberline}>
                                 {
-                                    results.map((element, index) => {
+                                    !alert && results.map((element, index) => {
                                         return <NumberLine content={element} key= {index.toString()}>
 
                                         </NumberLine>

@@ -1,0 +1,45 @@
+.wrapper {
+    display: flex;
+    position: absolute;
+    z-index: 99;
+    width: 300px;
+    height: 80px;
+    border-radius: 4px;
+    background: var(--success);
+    box-shadow: 0 1px 3px 3px var(--shadow);
+    align-items: center;
+    padding: 24px 24px;
+    right: 30px;
+    top: 90px;
+}
+
+.warning {
+    background: var(--warning);
+    color: var(--warning--label);
+}
+
+.error {
+    background: var(--error);
+    color: var(--error--label);
+}
+
+.default {
+    background: var(--success);
+    color: var(--success--label);
+}
+
+.wrapper span {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.wrapper span:hover {
+    color: red;
+}
+
+.wrapper p {
+    margin-bottom: 0;
+}
