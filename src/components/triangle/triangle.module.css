@@ -10,7 +10,7 @@
 .triangle {
     display: flex;
     min-width: 200px;
-    min-height: 160px;
+    min-height: 140px;
     justify-content: center;
     position: relative;
 }
@@ -22,7 +22,7 @@
     border-left: 100px solid transparent;
     border-right: 100px solid transparent;
 
-    border-bottom: 180px solid var(--light--green);
+    border-bottom: 160px solid var(--light--green);
 }
 
 .triangle p {
