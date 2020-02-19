@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-import { 
+import {
     getRandomNumber,
     getDivisionPair,
     getSubtractionPair,
@@ -19,7 +19,7 @@ const useResize = (myRef) => {
     const [height, setHeight] = useState('')
 
     const handleResize = () => {
-        if(myRef.current){
+        if (myRef.current) {
             setWidth(myRef.current.offsetWidth)
             setHeight(myRef.current.offsetHeight)
         }
@@ -40,13 +40,13 @@ const useResize = (myRef) => {
     return { width, height }
 }
 
-const Main = ({match}) => {
+const Main = ({ match }) => {
 
     const graphRef = useRef(null);
     const { width, height } = useResize(graphRef)
     console.log(width, height);
 
-    const { type="addition" } = match.params
+    const { type = "addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
     const [digits, setDigits] = useState(2);
     const [problems, setProblems] = useState(30);
@@ -58,7 +58,7 @@ const Main = ({match}) => {
     const [unit, setUnit] = useState(4);
     const [start, setStart] = useState(1);
     const [end, setEnd] = useState(10);
-    const [increment, setIncrement]= useState(1);
+    const [increment, setIncrement] = useState(1);
     const [lines, setLines] = useState(7);
 
     const [alert, setAlert] = useState(false);
@@ -66,7 +66,7 @@ const Main = ({match}) => {
     const [errorType, setErrorType] = useState("primary");
     // Set Operator
     var operator = "+";
-    switch(type) {
+    switch (type) {
         case "addition":
             operator = "+";
             break;
@@ -98,7 +98,7 @@ const Main = ({match}) => {
     const generateProblems = () => {
         // Generate Number arrays
         var array = [];
-        for(var i = 0 ; i < problems ; i ++) {
+        for (var i = 0; i < problems; i++) {
             array.push(
                 {
                     id: i,
@@ -109,56 +109,55 @@ const Main = ({match}) => {
         }
 
         // Set Operator
-        switch(type) {
+        switch (type) {
             case "addition":
             case "multiplication":
                 break;
             case "subtraction":
                 array = [];
-                for(i = 0 ; i < problems ; i ++) {
+                for (i = 0; i < problems; i++) {
                     array.push(getSubtractionPair(digits, i));
                 }
                 break;
             case "division":
                 array = [];
-                for(i = 0 ; i < problems ; i ++) {
+                for (i = 0; i < problems; i++) {
                     array.push(getDivisionPair(digits, i));
                 }
                 break;
             case "adsubfamilies":
                 array = [];
-                for(i = 0 ; i < 9 ; i ++) {
+                for (i = 0; i < 9; i++) {
                     array.push(getAddSubFactFamily(sum, i));
                 }
                 break;
             case "multipleFamily":
                 array = [];
-                for(i = 0 ; i < 9 ; i ++) {
+                for (i = 0; i < 9; i++) {
                     array.push(getMultiDiviFactFamily(max, i));
                 }
                 break;
             case "graphPaper":
                 array = [];
                 // DPI : 60
-                for(i = 0 ; i <  Math.floor(unit * height / 60) ; i ++) {
+                for (i = 0; i < Math.floor(unit * height / 60); i++) {
                     var colContent = [];
-                    for(var k = 0 ; k < Math.floor(unit * width / 60) ; k ++) 
+                    for (var k = 0; k < Math.floor(unit * width / 60); k++)
                         colContent.push("")
                     array.push(colContent)
                 }
                 break;
             case "numberline":
-                if(Math.floor(end / increment) > 25)
-                {
+                if (Math.floor(end / increment) > 25) {
                     showAlert("Can't display too much numbers across a line");
                     setErrorType("error");
                     array = [];
                     break;
                 }
                 array = [];
-                for(i = 0 ; i <  lines ; i ++) {
+                for (i = 0; i < lines; i++) {
                     var row = [];
-                    for(var indent = 0 ; (start + indent * increment) <= end ; indent ++) 
+                    for (var indent = 0; (start + indent * increment) <= end; indent++)
                         row.push(start + indent * increment)
                     array.push(row)
                 }
@@ -168,7 +167,7 @@ const Main = ({match}) => {
         }
 
         setResults(array);
-        if(!alert)
+        if (!alert)
             setShow(true);
     }
 
@@ -182,49 +181,52 @@ const Main = ({match}) => {
     }
 
     const heightPxToMm = (px) => {
-        return Math.floor(px/document.getElementById('myMm').offsetHeight);
+        return Math.floor(px / document.getElementById('myMm').offsetHeight);
     };
 
     const widthPxToMm = (px) => {
-        return Math.floor(px/document.getElementById('myMm').offsetWidth);
+        return Math.floor(px / document.getElementById('myMm').offsetWidth);
     };
-    
+
     const mmToPx = (mm) => {
-        return document.getElementById('myMm').offsetHeight*mm;
+        return document.getElementById('myMm').offsetHeight * mm;
     };
 
     const downloadPdf = () => {
         const result = document.getElementById("result");
         html2canvas(result)
-        .then(
-            (canvas) => {
-                const imgData = canvas.toDataURL("image/png");
-                const pdf = new jsPDF('p', 'mm', "a4");
-                pdf.addImage(imgData, 'PNG', 0, 0);
-                pdf.save("result.pdf");
-            }
-        )
+            .then(
+                (canvas) => {
+                    const imgData = canvas.toDataURL("image/png");
+                    const pdf = new jsPDF('p', 'mm', "a4");
+                    var width = pdf.internal.pageSize.getWidth();
+                    var height = pdf.internal.pageSize.getHeight();
+                    console.log(width, height)
+                    pdf.addImage(imgData, 'PNG', 0, 0, 206, 295);
+                    pdf.save("result.pdf");
+                }
+            )
     }
 
     return (
         <main className={styles.wrapper}>
             <Alert label={error} handleClose={hideAlert} type={errorType}
-                    className={alert? styles.showAlert : styles.hideAlert}/>
+                className={alert ? styles.showAlert : styles.hideAlert} />
             <div className="container">
-                <div className="row" style={{height: "100%", "justify-content": "center"}}>
+                <div className="row" style={{ height: "100%", "justify-content": "center" }}>
                     <div className={styles.selectPanel}>
                         <Input type="text" id="title" min={10} value={title}
                             label="Title" handleChange={setTitle}
                         />
                         {
                             operator === "addfamily" ?
-                            <Input type="number" id="sum" min={9} value={sum}
-                                label="Sum" handleChange={setSum}
-                            /> :
-                            operator === "multfamily" &&
-                            <Input type="number" id="sum" min={5} max={999} value={max}
-                                label="Operand Max Number" handleChange={setMax}
-                            />
+                                <Input type="number" id="sum" min={9} value={sum}
+                                    label="Sum" handleChange={setSum}
+                                /> :
+                                operator === "multfamily" &&
+                                <Input type="number" id="sum" min={5} max={999} value={max}
+                                    label="Operand Max Number" handleChange={setMax}
+                                />
                         }
 
                         {
@@ -274,12 +276,12 @@ const Main = ({match}) => {
                         {
                             show && <Button onClick={downloadPdf}>
                                 Download PDF
-                                <div id="myMm" style={{height: "1mm", width: "1mm"}} />
+                                <div id="myMm" style={{ height: "1mm", width: "1mm" }} />
                             </Button>
                         }
 
                         {
-                            !show && 
+                            !show &&
                             <div className={styles.alert}>
                                 Set whatever you want to generate!!!
                             </div>
@@ -293,60 +295,60 @@ const Main = ({match}) => {
                             </p>
                         }
                         {
-                            show &&                             
-                            (operator === "addfamily" || operator === "multfamily") ?
-                            <div className={styles.familyResults}>
-                                {
-                                    results.map(element => {
-                                        return <Triangle 
-                                            key = {element.id.toString()}
-                                            data={element}
-                                            operator={operator}
-                                        />;
-                                    })
-                                }
-                            </div> :
-                            (operator === "+" || operator === "-" || operator === "x" || operator === "÷") ?
-                            <div className={styles.calcResults}>
-                                {
-                                    results.map(element => {
-                                        return <Calc 
-                                            key = {element.id.toString()}
-                                            isNumber={true}
-                                            data={element}
-                                            operator={operator} 
-                                        />;
-                                    })
-                                }
-                            </div> : 
-                            operator === "graph" ? 
-                            <div className={styles.graph} ref={graphRef}>
-                                {
-                                    results.map((element, index) => {
-                                        return <div key={index.toString()}>
+                            show &&
+                                (operator === "addfamily" || operator === "multfamily") ?
+                                <div className={styles.familyResults}>
+                                    {
+                                        results.map(element => {
+                                            return <Triangle
+                                                key={element.id.toString()}
+                                                data={element}
+                                                operator={operator}
+                                            />;
+                                        })
+                                    }
+                                </div> :
+                                (operator === "+" || operator === "-" || operator === "x" || operator === "÷") ?
+                                    <div className={styles.calcResults}>
+                                        {
+                                            results.map(element => {
+                                                return <Calc
+                                                    key={element.id.toString()}
+                                                    isNumber={true}
+                                                    data={element}
+                                                    operator={operator}
+                                                />;
+                                            })
+                                        }
+                                    </div> :
+                                    operator === "graph" ?
+                                        <div className={styles.graph} ref={graphRef}>
                                             {
-                                                element.map((item, ind) => {
-                                                    return <span key = {ind.toString()}></span>
+                                                results.map((element, index) => {
+                                                    return <div key={index.toString()}>
+                                                        {
+                                                            element.map((item, ind) => {
+                                                                return <span key={ind.toString()}></span>
+                                                            })
+                                                        }
+                                                    </div>
+                                                })
+                                            }
+                                            <span className={styles.horiX}>
+                                            </span>
+                                            <span className={styles.verY}>
+                                            </span>
+                                        </div> :
+                                        operator === "line" &&
+                                        <div className={styles.numberline}>
+                                            {
+                                                !alert && results.map((element, index) => {
+                                                    return <NumberLine content={element} key={index.toString()}>
+
+                                                    </NumberLine>
                                                 })
                                             }
                                         </div>
-                                    })
-                                }
-                                <span className={styles.horiX}>
-                                </span>
-                                <span className={styles.verY}>
-                                </span>
-                            </div> :
-                            operator === "line" &&
-                            <div className={styles.numberline}>
-                                {
-                                    !alert && results.map((element, index) => {
-                                        return <NumberLine content={element} key= {index.toString()}>
-
-                                        </NumberLine>
-                                    })
-                                }
-                            </div>
                         }
                     </div>
                 </div>
