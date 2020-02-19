@@ -3,6 +3,7 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 0px 36px;
+    width: 100%;
 }
 
 .favicon {
@@ -26,14 +27,18 @@
 .links li {
     text-decoration: none;
     padding: 0px 16px;
+    display: flex;
+    align-items: center;
 }
 
 .links li a {
     text-decoration: none;
-    color: var(--black);
+    font-size: 18px;
+    font-weight: 600;
+    color: hsl(204, 38%, 97%);
 }
 
 .links li a:hover {
-    text-decoration: underline;
-    color: var(--primary);
+    color: white;
+    text-shadow: 0 0 6px #fff, 0 0 6px #fff, 0 0 15px #6f6f61, 0 0 14px #b5caad, 0 0 38px #4e4b4d, 0 0 24px #6f6d6e, 0 0 47px #ab9ca4;
 }

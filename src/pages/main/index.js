@@ -48,16 +48,16 @@ const Main = ({ match }) => {
 
     const { type = "addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
-    const [digits, setDigits] = useState(2);
-    const [problems, setProblems] = useState(30);
+    const [digits, setDigits] = useState(3);
+    const [problems, setProblems] = useState(50);
     const [show, setShow] = useState(false);
     const [results, setResults] = useState([]);
-    const [sum, setSum] = useState(20);
+    const [sum, setSum] = useState(50);
     const [max, setMax] = useState(5);
 
     const [unit, setUnit] = useState(4);
     const [start, setStart] = useState(1);
-    const [end, setEnd] = useState(10);
+    const [end, setEnd] = useState(50);
     const [increment, setIncrement] = useState(1);
     const [lines, setLines] = useState(7);
 
@@ -180,17 +180,17 @@ const Main = ({ match }) => {
         setAlert(false);
     }
 
-    const heightPxToMm = (px) => {
-        return Math.floor(px / document.getElementById('myMm').offsetHeight);
-    };
+    // const heightPxToMm = (px) => {
+    //     return Math.floor(px / document.getElementById('myMm').offsetHeight);
+    // };
 
-    const widthPxToMm = (px) => {
-        return Math.floor(px / document.getElementById('myMm').offsetWidth);
-    };
+    // const widthPxToMm = (px) => {
+    //     return Math.floor(px / document.getElementById('myMm').offsetWidth);
+    // };
 
-    const mmToPx = (mm) => {
-        return document.getElementById('myMm').offsetHeight * mm;
-    };
+    // const mmToPx = (mm) => {
+    //     return document.getElementById('myMm').offsetHeight * mm;
+    // };
 
     const downloadPdf = () => {
         const result = document.getElementById("result");
@@ -267,7 +267,7 @@ const Main = ({ match }) => {
                                 <Input type="number" id="increment" min={1} max={8} value={increment}
                                     label="Increment" handleChange={setIncrement}
                                 />
-                                <Input type="number" id="lines" min={1} max={8} value={lines}
+                                <Input type="number" id="lines" min={1} max={12} value={lines}
                                     label="Lines per page" handleChange={setLines}
                                 />
                             </div>
