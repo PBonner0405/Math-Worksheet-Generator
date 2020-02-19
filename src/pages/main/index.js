@@ -48,22 +48,24 @@ const Main = ({ match }) => {
 
     const { type = "addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
-    const [digits, setDigits] = useState(2);
-    const [problems, setProblems] = useState(30);
+    const [digits, setDigits] = useState(3);
+    const [problems, setProblems] = useState(50);
     const [show, setShow] = useState(false);
     const [results, setResults] = useState([]);
-    const [sum, setSum] = useState(20);
+    const [sum, setSum] = useState(50);
     const [max, setMax] = useState(5);
 
     const [unit, setUnit] = useState(4);
     const [start, setStart] = useState(1);
-    const [end, setEnd] = useState(10);
+    const [end, setEnd] = useState(50);
     const [increment, setIncrement] = useState(1);
     const [lines, setLines] = useState(7);
 
     const [alert, setAlert] = useState(false);
     const [error, setError] = useState("");
     const [errorType, setErrorType] = useState("primary");
+
+    const [isAnswer, setShowAnswer] = useState(false);
     // Set Operator
     var operator = "+";
     switch (type) {
@@ -95,15 +97,22 @@ const Main = ({ match }) => {
             operator = "+";
     }
 
+    const showAnswer = () => {
+        setShowAnswer(!isAnswer);
+    }
+
     const generateProblems = () => {
         // Generate Number arrays
         var array = [];
         for (var i = 0; i < problems; i++) {
+            const first = getRandomNumber(digits);
+            const second = getRandomNumber(digits);
             array.push(
                 {
                     id: i,
-                    first: getRandomNumber(digits),
-                    second: getRandomNumber(digits)
+                    first: first,
+                    second: second,
+                    last: first + second
                 }
             )
         }
@@ -111,7 +120,34 @@ const Main = ({ match }) => {
         // Set Operator
         switch (type) {
             case "addition":
+                array = [];
+                for (i = 0; i < problems; i++) {
+                    const first = getRandomNumber(digits);
+                    const second = getRandomNumber(digits);
+                    array.push(
+                        {
+                            id: i,
+                            first: first,
+                            second: second,
+                            last: first + second
+                        }
+                    )
+                }
+                break;
             case "multiplication":
+                array = [];
+                for (i = 0; i < problems; i++) {
+                    const first = getRandomNumber(digits);
+                    const second = getRandomNumber(digits);
+                    array.push(
+                        {
+                            id: i,
+                            first: first,
+                            second: second,
+                            last: first * second
+                        }
+                    )
+                }
                 break;
             case "subtraction":
                 array = [];
@@ -180,17 +216,17 @@ const Main = ({ match }) => {
         setAlert(false);
     }
 
-    const heightPxToMm = (px) => {
-        return Math.floor(px / document.getElementById('myMm').offsetHeight);
-    };
+    // const heightPxToMm = (px) => {
+    //     return Math.floor(px / document.getElementById('myMm').offsetHeight);
+    // };
 
-    const widthPxToMm = (px) => {
-        return Math.floor(px / document.getElementById('myMm').offsetWidth);
-    };
+    // const widthPxToMm = (px) => {
+    //     return Math.floor(px / document.getElementById('myMm').offsetWidth);
+    // };
 
-    const mmToPx = (mm) => {
-        return document.getElementById('myMm').offsetHeight * mm;
-    };
+    // const mmToPx = (mm) => {
+    //     return document.getElementById('myMm').offsetHeight * mm;
+    // };
 
     const downloadPdf = () => {
         const result = document.getElementById("result");
@@ -249,7 +285,7 @@ const Main = ({ match }) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="problems" min={1} max={80} value={problems}
+                            <Input type="number" id="problems" min={1} max={50} value={problems}
                                 label="Number of problems" handleChange={setProblems}
                             />
                         }
@@ -267,12 +303,17 @@ const Main = ({ match }) => {
                                 <Input type="number" id="increment" min={1} max={8} value={increment}
                                     label="Increment" handleChange={setIncrement}
                                 />
-                                <Input type="number" id="lines" min={1} max={8} value={lines}
+                                <Input type="number" id="lines" min={1} max={12} value={lines}
                                     label="Lines per page" handleChange={setLines}
                                 />
                             </div>
                         }
                         <Button onClick={generateProblems}>Generate!</Button>
+                        {
+                            show && <Button onClick={showAnswer}>
+                                { !isAnswer ? "Show Answer" : "Hide Answer"}
+                            </Button>
+                        }
                         {
                             show && <Button onClick={downloadPdf}>
                                 Download PDF
@@ -304,6 +345,7 @@ const Main = ({ match }) => {
                                                 key={element.id.toString()}
                                                 data={element}
                                                 operator={operator}
+                                                showAnser={isAnswer}
                                             />;
                                         })
                                     }
@@ -317,6 +359,7 @@ const Main = ({ match }) => {
                                                     isNumber={true}
                                                     data={element}
                                                     operator={operator}
+                                                    showAnser={isAnswer}
                                                 />;
                                             })
                                         }

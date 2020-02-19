@@ -25,7 +25,7 @@ const Input = ({
     return (
         <div className={classnames(styles.wrapper, className?className:"")}>
             <label htmlFor={id}>{label}</label>
-            <input id={id} type={type} value={value}
+            <input className="form-control" id={id} type={type} value={value}
                 onChange={e => handleChange(validate(e.target.value))}/>
         </div>
     );
