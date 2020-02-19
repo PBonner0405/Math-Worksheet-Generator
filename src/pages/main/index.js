@@ -66,6 +66,8 @@ const Main = ({ match }) => {
     const [errorType, setErrorType] = useState("primary");
 
     const [isAnswer, setShowAnswer] = useState(false);
+    const [displayNumber, setDisplay] = useState(true);
+
     // Set Operator
     var operator = "+";
     switch (type) {
@@ -308,6 +310,13 @@ const Main = ({ match }) => {
                                 />
                             </div>
                         }
+                        <div className={styles.checkbox}>
+                            <input id="display" type="checkbox" checked={displayNumber}
+                                onChange={e => setDisplay(!displayNumber)} />
+                            <label htmlFor="display">
+                                Display problem numbers
+                            </label>
+                        </div>
                         <Button onClick={generateProblems}>Generate!</Button>
                         {
                             show && <Button onClick={showAnswer}>
@@ -358,6 +367,7 @@ const Main = ({ match }) => {
                                                 data={element}
                                                 operator={operator}
                                                 showAnser={isAnswer}
+                                                isNumber={displayNumber}
                                             />;
                                         })
                                     }
@@ -368,7 +378,7 @@ const Main = ({ match }) => {
                                         results.map(element => {
                                             return <Calc
                                                 key={element.id.toString()}
-                                                isNumber={true}
+                                                isNumber={displayNumber}
                                                 data={element}
                                                 operator={operator}
                                                 showAnser={isAnswer}

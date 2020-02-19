@@ -215,6 +215,21 @@
     transition: ease all 100ms;
 }
 
+.checkbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 12px 0;
+}
+
+.checkbox label {
+    margin-bottom: 0;
+    margin-left: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
 @media screen and (max-width: 1200px) {
     .calcResults {
         grid-template-columns: repeat(6, 1fr);
