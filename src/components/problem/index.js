@@ -8,7 +8,7 @@ const Problem = ({ operator, className, data, showAnser, first }) => {
         <div className={classnames(styles.wrapper, className?className:"")}>
             {
                 showAnser && (
-                    operator==="+" ? 
+                    (operator==="+" || operator==="x") ? 
                     <div className={styles.answerWraper}>
                         <p className={styles.underLine}>
                             {first ? data.a :data.b}
@@ -24,7 +24,7 @@ const Problem = ({ operator, className, data, showAnser, first }) => {
                             {data.c}
                         </p>
                     </div> :
-                    operator==="-" &&
+                    (operator==="-" || operator==="÷") &&
                     <div className={styles.answerWraper}>
                         <p className={styles.underLine}>
                             {data.c}
@@ -39,7 +39,7 @@ const Problem = ({ operator, className, data, showAnser, first }) => {
                         <p className={styles.underLine}>
                             {first ? data.a :data.b}
                         </p>
-                    </div>
+                    </div> 
                 )
             }
             {
