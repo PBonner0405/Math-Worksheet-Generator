@@ -64,6 +64,8 @@ const Main = ({ match }) => {
     const [alert, setAlert] = useState(false);
     const [error, setError] = useState("");
     const [errorType, setErrorType] = useState("primary");
+
+    const [isAnswer, setShowAnswer] = useState(false);
     // Set Operator
     var operator = "+";
     switch (type) {
@@ -95,15 +97,22 @@ const Main = ({ match }) => {
             operator = "+";
     }
 
+    const showAnswer = () => {
+        setShowAnswer(!isAnswer);
+    }
+
     const generateProblems = () => {
         // Generate Number arrays
         var array = [];
         for (var i = 0; i < problems; i++) {
+            const first = getRandomNumber(digits);
+            const second = getRandomNumber(digits);
             array.push(
                 {
                     id: i,
-                    first: getRandomNumber(digits),
-                    second: getRandomNumber(digits)
+                    first: first,
+                    second: second,
+                    last: first + second
                 }
             )
         }
@@ -111,7 +120,34 @@ const Main = ({ match }) => {
         // Set Operator
         switch (type) {
             case "addition":
+                array = [];
+                for (i = 0; i < problems; i++) {
+                    const first = getRandomNumber(digits);
+                    const second = getRandomNumber(digits);
+                    array.push(
+                        {
+                            id: i,
+                            first: first,
+                            second: second,
+                            last: first + second
+                        }
+                    )
+                }
+                break;
             case "multiplication":
+                array = [];
+                for (i = 0; i < problems; i++) {
+                    const first = getRandomNumber(digits);
+                    const second = getRandomNumber(digits);
+                    array.push(
+                        {
+                            id: i,
+                            first: first,
+                            second: second,
+                            last: first * second
+                        }
+                    )
+                }
                 break;
             case "subtraction":
                 array = [];
@@ -249,7 +285,7 @@ const Main = ({ match }) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="problems" min={1} max={80} value={problems}
+                            <Input type="number" id="problems" min={1} max={50} value={problems}
                                 label="Number of problems" handleChange={setProblems}
                             />
                         }
@@ -273,6 +309,11 @@ const Main = ({ match }) => {
                             </div>
                         }
                         <Button onClick={generateProblems}>Generate!</Button>
+                        {
+                            show && <Button onClick={showAnswer}>
+                                { !isAnswer ? "Show Answer" : "Hide Answer"}
+                            </Button>
+                        }
                         {
                             show && <Button onClick={downloadPdf}>
                                 Download PDF
@@ -304,6 +345,7 @@ const Main = ({ match }) => {
                                                 key={element.id.toString()}
                                                 data={element}
                                                 operator={operator}
+                                                showAnser={isAnswer}
                                             />;
                                         })
                                     }
@@ -317,6 +359,7 @@ const Main = ({ match }) => {
                                                     isNumber={true}
                                                     data={element}
                                                     operator={operator}
+                                                    showAnser={isAnswer}
                                                 />;
                                             })
                                         }

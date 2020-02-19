@@ -43,7 +43,8 @@ const getDivisionPair = (length, index) => {
                 result = {
                     id: index,
                     first: num1>num2?num1:num2,
-                    second: getSecondDivisionValue(num1, num2)
+                    second: getSecondDivisionValue(num1, num2),
+                    last: (num1>num2?num1:num2) / getSecondDivisionValue(num1, num2)
                 }
                 break;
             }
@@ -62,7 +63,8 @@ const getSubtractionPair = (length, index) => {
             res =  {
                 id: index,
                 first: num1>num2?num1:num2,
-                second: num1>num2?num2:num1
+                second: num1>num2?num2:num1,
+                last: Math.abs(num1-num2)
             }
             break;
         }

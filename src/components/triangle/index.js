@@ -3,7 +3,7 @@ import React from 'react';
 import { Problem } from '../../components';
 import styles from './triangle.module.css';
 
-const Triangle = ({ data, isNumber=true, operator}) => {
+const Triangle = ({ data, isNumber=true, operator, showAnser }) => {
     return (
         <div className={styles.wrapper}>
             {
