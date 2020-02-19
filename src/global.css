@@ -42,9 +42,13 @@ header {
 }
 
 footer {
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: fantasy;
   height: var(--footer--height);
   background-image: linear-gradient(-3deg, var(--black--background), #404348, var(--black--background));
 }
