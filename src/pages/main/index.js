@@ -238,7 +238,7 @@ const Main = ({ match }) => {
                     var width = pdf.internal.pageSize.getWidth();
                     var height = pdf.internal.pageSize.getHeight();
                     console.log(width, height)
-                    pdf.addImage(imgData, 'PNG', 0, 0, 206, 295);
+                    pdf.addImage(imgData, 'PNG', -2, -1, 207, 300);
                     pdf.save("result.pdf");
                 }
             )
@@ -328,15 +328,27 @@ const Main = ({ match }) => {
                             </div>
                         }
                     </div>
-                    <div className={styles.previewWorksheet} id="result">
-                        {
-                            title !== "" &&
-                            <p>
-                                {title}
-                            </p>
-                        }
-                        {
-                            show &&
+                    <div className={styles.resultWrapper}>
+                        <p>Preview Worksheet</p>
+                        <ul className={styles.tab}>
+                            <li onClick={e => setShowAnswer(false)}
+                                className={isAnswer? styles.inactive : styles.active}>
+                                WORKSHEET
+                            </li>
+                            <li onClick={e => setShowAnswer(true)}
+                                className={isAnswer? styles.active : styles.inactive}>
+                                ANSWER KEY
+                            </li>
+                        </ul>
+                        <div className={styles.previewWorksheet} id="result">
+                            {
+                                title !== "" &&
+                                <p>
+                                    {title}
+                                </p>
+                            }
+                            {
+                                show &&
                                 (operator === "addfamily" || operator === "multfamily") ?
                                 <div className={styles.familyResults}>
                                     {
@@ -351,48 +363,49 @@ const Main = ({ match }) => {
                                     }
                                 </div> :
                                 (operator === "+" || operator === "-" || operator === "x" || operator === "÷") ?
-                                    <div className={styles.calcResults}>
-                                        {
-                                            results.map(element => {
-                                                return <Calc
-                                                    key={element.id.toString()}
-                                                    isNumber={true}
-                                                    data={element}
-                                                    operator={operator}
-                                                    showAnser={isAnswer}
-                                                />;
-                                            })
-                                        }
-                                    </div> :
-                                    operator === "graph" ?
-                                        <div className={styles.graph} ref={graphRef}>
-                                            {
-                                                results.map((element, index) => {
-                                                    return <div key={index.toString()}>
-                                                        {
-                                                            element.map((item, ind) => {
-                                                                return <span key={ind.toString()}></span>
-                                                            })
-                                                        }
-                                                    </div>
-                                                })
-                                            }
-                                            <span className={styles.horiX}>
-                                            </span>
-                                            <span className={styles.verY}>
-                                            </span>
-                                        </div> :
-                                        operator === "line" &&
-                                        <div className={styles.numberline}>
-                                            {
-                                                !alert && results.map((element, index) => {
-                                                    return <NumberLine content={element} key={index.toString()}>
+                                <div className={styles.calcResults}>
+                                    {
+                                        results.map(element => {
+                                            return <Calc
+                                                key={element.id.toString()}
+                                                isNumber={true}
+                                                data={element}
+                                                operator={operator}
+                                                showAnser={isAnswer}
+                                            />;
+                                        })
+                                    }
+                                </div> :
+                                operator === "graph" ?
+                                <div className={styles.graph} ref={graphRef}>
+                                    {
+                                        results.map((element, index) => {
+                                            return <div key={index.toString()}>
+                                                {
+                                                    element.map((item, ind) => {
+                                                        return <span key={ind.toString()}></span>
+                                                    })
+                                                }
+                                            </div>
+                                        })
+                                    }
+                                    <span className={styles.horiX}>
+                                    </span>
+                                    <span className={styles.verY}>
+                                    </span>
+                                </div> :
+                                operator === "line" &&
+                                <div className={styles.numberline}>
+                                    {
+                                        !alert && results.map((element, index) => {
+                                            return <NumberLine content={element} key={index.toString()}>
 
-                                                    </NumberLine>
-                                                })
-                                            }
-                                        </div>
-                        }
+                                            </NumberLine>
+                                        })
+                                    }
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
