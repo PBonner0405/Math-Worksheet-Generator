@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import classnames from 'classnames';
 
 import {
     getRandomNumber,
@@ -66,6 +67,10 @@ const Main = ({ match }) => {
     const [errorType, setErrorType] = useState("primary");
 
     const [isAnswer, setShowAnswer] = useState(false);
+    const [displayNumber, setDisplay] = useState(true);
+    const [isShowingDialog, showDialog] = useState(false);
+    const [previewImage, setPreveiwImage] = useState(null);
+
     // Set Operator
     var operator = "+";
     switch (type) {
@@ -103,8 +108,17 @@ const Main = ({ match }) => {
 
     const generateProblems = () => {
         // Generate Number arrays
+        var probs = problems;
+        if(problems > 75){
+            probs = 75;
+            setProblems(75);
+        }
+        if(problems < 1){
+            probs = 1;
+            setProblems(1);
+        }
         var array = [];
-        for (var i = 0; i < problems; i++) {
+        for (var i = 0; i < probs; i++) {
             const first = getRandomNumber(digits);
             const second = getRandomNumber(digits);
             array.push(
@@ -121,7 +135,7 @@ const Main = ({ match }) => {
         switch (type) {
             case "addition":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     const first = getRandomNumber(digits);
                     const second = getRandomNumber(digits);
                     array.push(
@@ -136,7 +150,7 @@ const Main = ({ match }) => {
                 break;
             case "multiplication":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     const first = getRandomNumber(digits);
                     const second = getRandomNumber(digits);
                     array.push(
@@ -151,13 +165,13 @@ const Main = ({ match }) => {
                 break;
             case "subtraction":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     array.push(getSubtractionPair(digits, i));
                 }
                 break;
             case "division":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     array.push(getDivisionPair(digits, i));
                 }
                 break;
@@ -238,8 +252,22 @@ const Main = ({ match }) => {
                     var width = pdf.internal.pageSize.getWidth();
                     var height = pdf.internal.pageSize.getHeight();
                     console.log(width, height)
-                    pdf.addImage(imgData, 'PNG', 0, 0, 206, 295);
+                    pdf.addImage(imgData, 'PNG', -2, -1, 207, 300); //207,300
                     pdf.save("result.pdf");
+                }
+            )
+    }
+
+    const previewPDF = () => {
+        showDialog(!isShowingDialog);
+        // setPreveiwImage
+
+        const result = document.getElementById("result");
+        html2canvas(result)
+            .then(
+                (canvas) => {
+                    const imgData = canvas.toDataURL("image/png");
+                    setPreveiwImage(imgData);
                 }
             )
     }
@@ -285,7 +313,7 @@ const Main = ({ match }) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="problems" min={1} max={50} value={problems}
+                            <Input type="number" id="problems" min={1} max={75} value={problems}
                                 label="Number of problems" handleChange={setProblems}
                             />
                         }
@@ -308,18 +336,33 @@ const Main = ({ match }) => {
                                 />
                             </div>
                         }
+                        <div className={styles.checkbox}>
+                            <input id="display" type="checkbox" checked={displayNumber}
+                                onChange={e => setDisplay(!displayNumber)} />
+                            <label htmlFor="display">
+                                Display problem numbers
+                            </label>
+                        </div>
                         <Button onClick={generateProblems}>Generate!</Button>
                         {
                             show && <Button onClick={showAnswer}>
                                 { !isAnswer ? "Show Answer" : "Hide Answer"}
                             </Button>
                         }
+
+                        {
+                            show && <Button onClick={previewPDF}>
+                                Preview
+                            </Button>
+                        }
+                        
                         {
                             show && <Button onClick={downloadPdf}>
                                 Download PDF
                                 <div id="myMm" style={{ height: "1mm", width: "1mm" }} />
                             </Button>
                         }
+
 
                         {
                             !show &&
@@ -328,15 +371,27 @@ const Main = ({ match }) => {
                             </div>
                         }
                     </div>
-                    <div className={styles.previewWorksheet} id="result">
-                        {
-                            title !== "" &&
-                            <p>
-                                {title}
-                            </p>
-                        }
-                        {
-                            show &&
+                    <div className={styles.resultWrapper}>
+                        <p>Preview Worksheet</p>
+                        <ul className={styles.tab}>
+                            <li onClick={e => setShowAnswer(false)}
+                                className={isAnswer? styles.inactive : styles.active}>
+                                WORKSHEET
+                            </li>
+                            <li onClick={e => setShowAnswer(true)}
+                                className={isAnswer? styles.active : styles.inactive}>
+                                ANSWER KEY
+                            </li>
+                        </ul>
+                        <div className={styles.previewWorksheet} id="result">
+                            {
+                                title !== "" &&
+                                <p>
+                                    {title}
+                                </p>
+                            }
+                            {
+                                show &&
                                 (operator === "addfamily" || operator === "multfamily") ?
                                 <div className={styles.familyResults}>
                                     {
@@ -346,53 +401,62 @@ const Main = ({ match }) => {
                                                 data={element}
                                                 operator={operator}
                                                 showAnser={isAnswer}
+                                                isNumber={displayNumber}
                                             />;
                                         })
                                     }
                                 </div> :
                                 (operator === "+" || operator === "-" || operator === "x" || operator === "÷") ?
-                                    <div className={styles.calcResults}>
-                                        {
-                                            results.map(element => {
-                                                return <Calc
-                                                    key={element.id.toString()}
-                                                    isNumber={true}
-                                                    data={element}
-                                                    operator={operator}
-                                                    showAnser={isAnswer}
-                                                />;
-                                            })
-                                        }
-                                    </div> :
-                                    operator === "graph" ?
-                                        <div className={styles.graph} ref={graphRef}>
-                                            {
-                                                results.map((element, index) => {
-                                                    return <div key={index.toString()}>
-                                                        {
-                                                            element.map((item, ind) => {
-                                                                return <span key={ind.toString()}></span>
-                                                            })
-                                                        }
-                                                    </div>
-                                                })
-                                            }
-                                            <span className={styles.horiX}>
-                                            </span>
-                                            <span className={styles.verY}>
-                                            </span>
-                                        </div> :
-                                        operator === "line" &&
-                                        <div className={styles.numberline}>
-                                            {
-                                                !alert && results.map((element, index) => {
-                                                    return <NumberLine content={element} key={index.toString()}>
+                                <div className={styles.calcResults}>
+                                    {
+                                        results.map(element => {
+                                            return <Calc
+                                                key={element.id.toString()}
+                                                isNumber={displayNumber}
+                                                data={element}
+                                                operator={operator}
+                                                showAnser={isAnswer}
+                                            />;
+                                        })
+                                    }
+                                </div> :
+                                operator === "graph" ?
+                                <div className={styles.graph} ref={graphRef}>
+                                    {
+                                        results.map((element, index) => {
+                                            return <div key={index.toString()}>
+                                                {
+                                                    element.map((item, ind) => {
+                                                        return <span key={ind.toString()}></span>
+                                                    })
+                                                }
+                                            </div>
+                                        })
+                                    }
+                                    <span className={styles.horiX}>
+                                    </span>
+                                    <span className={styles.verY}>
+                                    </span>
+                                </div> :
+                                operator === "line" &&
+                                <div className={styles.numberline}>
+                                    {
+                                        !alert && results.map((element, index) => {
+                                            return <NumberLine content={element} key={index.toString()}>
 
-                                                    </NumberLine>
-                                                })
-                                            }
-                                        </div>
-                        }
+                                            </NumberLine>
+                                        })
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div className={classnames(styles.dialog, {[styles.show]: isShowingDialog})}>
+                        <img alt="preview page" src={previewImage}>
+                        </img>
+                    </div>
+                    <div className={classnames(styles.dialogBack, {[styles.show]: isShowingDialog})} onClick={e => showDialog(false)}>
+
                     </div>
                 </div>
             </div>
