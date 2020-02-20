@@ -105,8 +105,17 @@ const Main = ({ match }) => {
 
     const generateProblems = () => {
         // Generate Number arrays
+        var probs = problems;
+        if(problems > 75){
+            probs = 75;
+            setProblems(75);
+        }
+        if(problems < 1){
+            probs = 1;
+            setProblems(1);
+        }
         var array = [];
-        for (var i = 0; i < problems; i++) {
+        for (var i = 0; i < probs; i++) {
             const first = getRandomNumber(digits);
             const second = getRandomNumber(digits);
             array.push(
@@ -123,7 +132,7 @@ const Main = ({ match }) => {
         switch (type) {
             case "addition":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     const first = getRandomNumber(digits);
                     const second = getRandomNumber(digits);
                     array.push(
@@ -138,7 +147,7 @@ const Main = ({ match }) => {
                 break;
             case "multiplication":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     const first = getRandomNumber(digits);
                     const second = getRandomNumber(digits);
                     array.push(
@@ -153,13 +162,13 @@ const Main = ({ match }) => {
                 break;
             case "subtraction":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     array.push(getSubtractionPair(digits, i));
                 }
                 break;
             case "division":
                 array = [];
-                for (i = 0; i < problems; i++) {
+                for (i = 0; i < probs; i++) {
                     array.push(getDivisionPair(digits, i));
                 }
                 break;
@@ -287,7 +296,7 @@ const Main = ({ match }) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="problems" min={1} max={50} value={problems}
+                            <Input type="number" id="problems" min={1} max={75} value={problems}
                                 label="Number of problems" handleChange={setProblems}
                             />
                         }
