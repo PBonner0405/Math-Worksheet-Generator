@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import classnames from 'classnames';
 
 import {
     getRandomNumber,
@@ -67,6 +68,8 @@ const Main = ({ match }) => {
 
     const [isAnswer, setShowAnswer] = useState(false);
     const [displayNumber, setDisplay] = useState(true);
+    const [isShowingDialog, showDialog] = useState(false);
+    const [previewImage, setPreveiwImage] = useState(null);
 
     // Set Operator
     var operator = "+";
@@ -249,8 +252,22 @@ const Main = ({ match }) => {
                     var width = pdf.internal.pageSize.getWidth();
                     var height = pdf.internal.pageSize.getHeight();
                     console.log(width, height)
-                    pdf.addImage(imgData, 'PNG', -2, -1, 207, 300);
+                    pdf.addImage(imgData, 'PNG', -2, -1, 207, 300); //207,300
                     pdf.save("result.pdf");
+                }
+            )
+    }
+
+    const previewPDF = () => {
+        showDialog(!isShowingDialog);
+        // setPreveiwImage
+
+        const result = document.getElementById("result");
+        html2canvas(result)
+            .then(
+                (canvas) => {
+                    const imgData = canvas.toDataURL("image/png");
+                    setPreveiwImage(imgData);
                 }
             )
     }
@@ -332,12 +349,20 @@ const Main = ({ match }) => {
                                 { !isAnswer ? "Show Answer" : "Hide Answer"}
                             </Button>
                         }
+
+                        {
+                            show && <Button onClick={previewPDF}>
+                                Preview
+                            </Button>
+                        }
+                        
                         {
                             show && <Button onClick={downloadPdf}>
                                 Download PDF
                                 <div id="myMm" style={{ height: "1mm", width: "1mm" }} />
                             </Button>
                         }
+
 
                         {
                             !show &&
@@ -425,6 +450,13 @@ const Main = ({ match }) => {
                                 </div>
                             }
                         </div>
+                    </div>
+                    <div className={classnames(styles.dialog, {[styles.show]: isShowingDialog})}>
+                        <img alt="preview page" src={previewImage}>
+                        </img>
+                    </div>
+                    <div className={classnames(styles.dialogBack, {[styles.show]: isShowingDialog})} onClick={e => showDialog(false)}>
+
                     </div>
                 </div>
             </div>
