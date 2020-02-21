@@ -3,7 +3,7 @@
     flex-direction: column;
     position: relative;
 
-    font-size: 12px;
+    font-size: 24px;
     font-weight: 400;
     max-width: 100%;
     min-width: 100%;
@@ -12,10 +12,10 @@
 
 .number {
     position: absolute;
-    top: 12px;
-    left: 16px;
+    top: 16px;
+    left: 18px;
     margin-bottom: 0;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--black);
 }
 
@@ -23,7 +23,7 @@
     text-align: right;
     margin-bottom: 0;
     width: 100%;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .second {

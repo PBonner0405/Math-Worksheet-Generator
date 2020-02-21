@@ -1,10 +1,15 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+    font-size: 18px;
 }
 
 .wrapper > div:last-child {
     margin-top: 16px;
+}
+
+.wrapper > p {
+    margin-bottom: 0px;
 }
 
 .triangle {

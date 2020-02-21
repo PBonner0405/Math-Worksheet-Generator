@@ -50,7 +50,7 @@ const Main = ({ match }) => {
     const { type = "addition" } = match.params
     const [title, setTitle] = useState(type.toUpperCase());
     const [digits, setDigits] = useState(3);
-    const [problems, setProblems] = useState(50);
+    const [problems, setProblems] = useState(16);
     const [show, setShow] = useState(false);
     const [results, setResults] = useState([]);
     const [sum, setSum] = useState(50);
@@ -109,9 +109,9 @@ const Main = ({ match }) => {
     const generateProblems = () => {
         // Generate Number arrays
         var probs = problems;
-        if(problems > 75){
-            probs = 75;
-            setProblems(75);
+        if(problems > 16){
+            probs = 16;
+            setProblems(16);
         }
         if(problems < 1){
             probs = 1;
@@ -313,7 +313,7 @@ const Main = ({ match }) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="problems" min={1} max={75} value={problems}
+                            <Input type="number" id="problems" min={1} max={16} value={problems}
                                 label="Number of problems" handleChange={setProblems}
                             />
                         }
@@ -344,21 +344,16 @@ const Main = ({ match }) => {
                             </label>
                         </div>
                         <Button onClick={generateProblems}>Generate!</Button>
-                        {
-                            show && <Button onClick={showAnswer}>
-                                { !isAnswer ? "Show Answer" : "Hide Answer"}
-                            </Button>
-                        }
 
                         {
                             show && <Button onClick={previewPDF}>
                                 Preview
                             </Button>
                         }
-                        
+
                         {
                             show && <Button onClick={downloadPdf}>
-                                Download PDF
+                                Download Worksheet
                                 <div id="myMm" style={{ height: "1mm", width: "1mm" }} />
                             </Button>
                         }
