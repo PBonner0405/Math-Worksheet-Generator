@@ -109,9 +109,9 @@ const Main = ({ match }) => {
     const generateProblems = () => {
         // Generate Number arrays
         var probs = problems;
-        if(problems > 16){
-            probs = 16;
-            setProblems(16);
+        if(problems > 36){
+            probs = 36;
+            setProblems(36);
         }
         if(problems < 1){
             probs = 1;
@@ -291,7 +291,7 @@ const Main = ({ match }) => {
             <Alert label={error} handleClose={hideAlert} type={errorType}
                 className={alert ? styles.showAlert : styles.hideAlert} />
             <div className="container">
-                <div className="row" style={{ height: "100%", "justify-content": "center" }}>
+                <div className="row" style={{ height: "100%", "justifyContent": "center" }}>
                     <div className={styles.selectPanel}>
                         <Input type="text" id="title" min={10} value={title}
                             label="Title" handleChange={setTitle}
@@ -327,7 +327,7 @@ const Main = ({ match }) => {
                             (
                                 operator === "+" || operator === "-" || operator === "x" || operator === "÷"
                             ) &&
-                            <Input type="number" id="problems" min={1} max={16} value={problems}
+                            <Input type="number" style="withButton" id="problems" min={8} max={36} value={problems}
                                 label="Number of problems" handleChange={setProblems}
                             />
                         }
