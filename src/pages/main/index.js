@@ -177,13 +177,13 @@ const Main = ({ match }) => {
                 break;
             case "adsubfamilies":
                 array = [];
-                for (i = 0; i < 9; i++) {
+                for (i = 0; i < 16; i++) {
                     array.push(getAddSubFactFamily(sum, i));
                 }
                 break;
             case "multipleFamily":
                 array = [];
-                for (i = 0; i < 9; i++) {
+                for (i = 0; i < 16; i++) {
                     array.push(getMultiDiviFactFamily(max, i));
                 }
                 break;
@@ -251,8 +251,22 @@ const Main = ({ match }) => {
                     const pdf = new jsPDF('p', 'mm', "a4");
                     var width = pdf.internal.pageSize.getWidth();
                     var height = pdf.internal.pageSize.getHeight();
-                    console.log(width, height)
                     pdf.addImage(imgData, 'PNG', -2, -1, 207, 300); //207,300
+                    pdf.save("result.pdf");
+                }
+            )
+    }
+
+    const downloadAnswerKey = () => {
+        const result = document.getElementById("resultAnser");
+        html2canvas(result)
+            .then(
+                (canvas) => {
+                    const imgData = canvas.toDataURL("image/png");
+                    const pdf = new jsPDF('p', 'mm', "a4");
+                    var width = pdf.internal.pageSize.getWidth();
+                    var height = pdf.internal.pageSize.getHeight();
+                    pdf.addImage(imgData, 'PNG', 0, -1, 210, 300); //207,300
                     pdf.save("result.pdf");
                 }
             )
@@ -345,11 +359,11 @@ const Main = ({ match }) => {
                         </div>
                         <Button onClick={generateProblems}>Generate!</Button>
 
-                        {
+                        {/* {
                             show && <Button onClick={previewPDF}>
                                 Preview
                             </Button>
-                        }
+                        } */}
 
                         {
                             show && <Button onClick={downloadPdf}>
@@ -358,6 +372,11 @@ const Main = ({ match }) => {
                             </Button>
                         }
 
+                        {
+                            show && <Button onClick={downloadAnswerKey}>
+                                Download Answer Key
+                            </Button>
+                        }
 
                         {
                             !show &&
@@ -411,6 +430,74 @@ const Main = ({ match }) => {
                                                 data={element}
                                                 operator={operator}
                                                 showAnser={isAnswer}
+                                            />;
+                                        })
+                                    }
+                                </div> :
+                                operator === "graph" ?
+                                <div className={styles.graph} ref={graphRef}>
+                                    {
+                                        results.map((element, index) => {
+                                            return <div key={index.toString()}>
+                                                {
+                                                    element.map((item, ind) => {
+                                                        return <span key={ind.toString()}></span>
+                                                    })
+                                                }
+                                            </div>
+                                        })
+                                    }
+                                    <span className={styles.horiX}>
+                                    </span>
+                                    <span className={styles.verY}>
+                                    </span>
+                                </div> :
+                                operator === "line" &&
+                                <div className={styles.numberline}>
+                                    {
+                                        !alert && results.map((element, index) => {
+                                            return <NumberLine content={element} key={index.toString()}>
+
+                                            </NumberLine>
+                                        })
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div className={styles.previewAnswerWorksheet} id="resultAnser">
+                            {
+                                title !== "" &&
+                                <p>
+                                    {title}
+                                </p>
+                            }
+                            {
+                                show &&
+                                (operator === "addfamily" || operator === "multfamily") ?
+                                <div className={styles.familyResults}>
+                                    {
+                                        results.map(element => {
+                                            return <Triangle
+                                                key={element.id.toString()}
+                                                data={element}
+                                                operator={operator}
+                                                showAnser={true}
+                                                isNumber={displayNumber}
+                                            />;
+                                        })
+                                    }
+                                </div> :
+                                (operator === "+" || operator === "-" || operator === "x" || operator === "÷") ?
+                                <div className={styles.calcResults}>
+                                    {
+                                        results.map(element => {
+                                            return <Calc
+                                                key={element.id.toString()}
+                                                isNumber={displayNumber}
+                                                data={element}
+                                                operator={operator}
+                                                showAnser={true}
                                             />;
                                         })
                                     }
