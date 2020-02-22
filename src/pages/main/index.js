@@ -113,9 +113,9 @@ const Main = ({ match }) => {
             probs = 36;
             setProblems(36);
         }
-        if(problems < 1){
-            probs = 1;
-            setProblems(1);
+        if(problems < 8){
+            probs = 8;
+            setProblems(8);
         }
         var array = [];
         for (var i = 0; i < probs; i++) {
