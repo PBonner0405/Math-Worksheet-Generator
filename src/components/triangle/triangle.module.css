@@ -1,16 +1,21 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+    font-size: 18px;
 }
 
 .wrapper > div:last-child {
-    margin-top: 16px;
+    margin-top: 22px;
+}
+
+.wrapper > p {
+    margin-bottom: 0px;
 }
 
 .triangle {
     display: flex;
-    min-width: 200px;
-    min-height: 140px;
+    min-width: 176px;
+    min-height: 72px;
     justify-content: center;
     position: relative;
 }
@@ -19,22 +24,23 @@
     position: absolute;
     width: 0; 
     height: 0; 
-    border-left: 100px solid transparent;
-    border-right: 100px solid transparent;
+    border-left: 72px solid transparent;
+    border-right: 72px solid transparent;
 
-    border-bottom: 160px solid var(--light--green);
+    border-bottom: 96px solid var(--light--green);
 }
 
 .triangle p {
     z-index: 99;
     position: absolute;
     margin: 0px;
+    font-size: 12px;
 }
 
 .triangle p:nth-child(2) {
-    left: 106px;
+    left: 72px;
     top: 32px;
-    width: 36px;
+    width: 44px;
     text-align: center;
 }
 
@@ -42,14 +48,14 @@
     z-index: 99;
     position: absolute;
     left: 50px;
-    bottom: -15px;
+    bottom: -24px;
 }
 
 .triangle p:nth-child(4) {
     z-index: 99;
     position: absolute;
     right: 50px;
-    bottom: -15px;
+    bottom: -24px;
     width: 40px;
     text-align: right;
 }
