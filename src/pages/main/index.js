@@ -198,7 +198,8 @@ const Main = ({ match }) => {
                 }
                 break;
             case "numberline":
-                if (Math.floor(end / increment) > 25) {
+                console.log(start, increment, end);
+                if (Math.floor((end-start) / increment) > 25) {
                     showAlert("Can't display too much numbers across a line");
                     setErrorType("error");
                     array = [];
@@ -207,8 +208,8 @@ const Main = ({ match }) => {
                 array = [];
                 for (i = 0; i < lines; i++) {
                     var row = [];
-                    for (var indent = 0; (start + indent * increment) <= end; indent++)
-                        row.push(start + indent * increment)
+                    for (var indent = start; indent <= end; indent=indent+increment)
+                        row.push(indent)
                     array.push(row)
                 }
                 break;
@@ -337,16 +338,16 @@ const Main = ({ match }) => {
                             ) &&
                             <div className={styles.lineInput}>
                                 <Input type="number" id="start" min={1} max={8} value={start}
-                                    label="Starting Number" handleChange={setStart}
+                                    label="Starting Number" handleChange={value => setStart(parseInt(value))}
                                 />
                                 <Input type="number" id="end" value={end}
                                     label="Ending Number" handleChange={setEnd}
                                 />
                                 <Input type="number" id="increment" min={1} max={8} value={increment}
-                                    label="Increment" handleChange={setIncrement}
+                                    label="Increment" handleChange={value => setIncrement(parseInt(value))}
                                 />
                                 <Input type="number" id="lines" min={1} max={12} value={lines}
-                                    label="Lines per page" handleChange={setLines}
+                                    label="Lines per page" handleChange={value => setLines(parseInt(value))}
                                 />
                             </div>
                         }
